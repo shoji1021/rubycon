@@ -1,48 +1,50 @@
 import { consolePrinter, RubyVM } from "@ruby/wasm-wasi";
 import { File, OpenFile, PreopenDirectory, WASI } from "@bjorn3/browser_wasi_shim";
 
-// Ruby WASM のロード
 const response = await fetch("https://cdn.jsdelivr.net/npm/@ruby/3.4-wasm-wasi@2.7.1/dist/ruby+stdlib.wasm");
 const module = await WebAssembly.compileStreaming(response);
 
-// WASI の設定
-const args: string[] = [];
-const env: string[] = [];
+const args = [];
+const env = [];
+
 const fds = [
-  new OpenFile(new File([])), // stdin
-  new OpenFile(new File([])), // stdout
-  new OpenFile(new File([])), // stderr
+  new OpenFile(new File([])),
+  new OpenFile(new File([])),
+  new OpenFile(new File([])),
   new PreopenDirectory("/", new Map()),
 ];
+
 const wasi = new WASI(args, env, fds, { debug: false });
 
-// DOM要素取得
-const output = document.getElementById("output") as HTMLTextAreaElement;
-const textbox = document.getElementById("textbox") as HTMLTextAreaElement;
-const button = document.getElementById("button") as HTMLButtonElement;
-const lineNumbers = document.getElementById("linenumbers");
-
-// 標準出力/エラー出力
+const output = <HTMLTextAreaElement>document.getElementById("output"); // ⬅️ 追加・移動OK
 const printer = consolePrinter({
   stderr: (text) => { output.value += "⚠️ " + text + "\n"; },
   stdout: (text) => { output.value += text + "\n"; }
 });
 
-// Ruby VM 構築
 const { vm } = await RubyVM.instantiateModule({
-  module,
-  wasip1: wasi,
-  addToImports: (imports) => printer.addToImports(imports),
-  setMemory: (memory) => printer.setMemory(memory),
+  module: module, wasip1: wasi,
+  addToImports: (imports) => {
+    printer.addToImports(imports);
+  },
+  setMemory: (memory) => {
+    printer.setMemory(memory);
+  }
 });
 
-// 実行ボタンの処理
+const textbox = <HTMLTextAreaElement>document.getElementById("textbox");
+const button = <HTMLButtonElement>document.getElementById("button");
+
 button.addEventListener("click", async () => {
-  output.value = ""; // 出力をリセット
-  await vm.evalAsync(textbox.value);
+  output.value = ""; // ← 前回の出力を消す（好みで）
+  await vm.evalAsync(textbox.value); // 出力はconsolePrinter経由で反映済
+
 });
 
-// 行番号更新関数
+// 行番号表示用の要素を取得
+const lineNumbers = document.getElementById("linenumbers");
+
+// 行番号を更新する関数
 function updateLineNumbers() {
   const lines = textbox.value.split("\n").length;
   let lineNumberText = "";
@@ -52,14 +54,16 @@ function updateLineNumbers() {
   if (lineNumbers) lineNumbers.textContent = lineNumberText;
 }
 
-// 行番号スクロール同期
+// 入力時に行番号を更新
 textbox.addEventListener("input", updateLineNumbers);
 textbox.addEventListener("scroll", () => {
   if (lineNumbers) {
     lineNumbers.scrollTop = textbox.scrollTop;
   }
 });
-updateLineNumbers(); // 初期化時にも更新
+
+// 初期化時にも更新
+updateLineNumbers();
 
 // Ctrl+Enter で実行
 textbox.addEventListener("keydown", (e) => {
@@ -67,4 +71,4 @@ textbox.addEventListener("keydown", (e) => {
     e.preventDefault();
     button.click(); // 実行トリガー
   }
-}); 
+});
