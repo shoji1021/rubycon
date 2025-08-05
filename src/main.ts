@@ -67,4 +67,4 @@ textbox.addEventListener("keydown", (e) => {
     e.preventDefault();
     button.click(); // 実行トリガー
   }
-});
+}); 
