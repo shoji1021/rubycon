@@ -64,3 +64,11 @@ textbox.addEventListener("scroll", () => {
 
 // 初期化時にも更新
 updateLineNumbers();
+
+// Ctrl+Enter で実行
+textbox.addEventListener("keydown", (e) => {
+  if (e.ctrlKey && e.key === "Enter") {
+    e.preventDefault();
+    button.click(); // 実行トリガー
+  }
+});
