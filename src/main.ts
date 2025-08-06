@@ -72,3 +72,17 @@ textbox.addEventListener("keydown", (e) => {
     button.click(); // 実行トリガー
   }
 });
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  const editorScroll = document.getElementById("editorScroll")!;
+  const linenumbers = document.getElementById("linenumbers")!;
+  const textbox = document.getElementById("textbox")!;
+
+  // スクロールイベントをeditorScrollのみに統一
+  editorScroll.addEventListener("scroll", () => {
+    const scrollTop = editorScroll.scrollTop;
+    linenumbers.scrollTop = scrollTop;
+    textbox.scrollTop = scrollTop;
+  });
+});

@@ -23,12 +23,19 @@
     }
 
     .editor-container {
-      display: flex;
-      background-color: #1e1e1e;
-      height: 400px;
-      padding: 10px;
-    }
+  background-color: #1e1e1e;
+  height: 400px;
+  overflow: hidden; /* ← スクロール禁止 */
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.4em;
+}
 
+.editor-scroll {
+  display: flex;
+  height: 100%;
+  overflow: auto; /* ← ✅ ここがスクロール主体 */
+}
     textarea {
       background-color: #1e1e1e;
       color: #c5c5c5;
@@ -81,19 +88,38 @@
       outline: none;
     }
 
-    #textbox {
-  font-family: monospace;
-  line-height: 1.4em;
-  resize: none;
-  overflow: auto;
+    #linenumbers {
+  width: 40px;
+  padding: 10px 5px;
+  text-align: right;
+  color: rgb(150, 150, 150);
+  background-color: #1e1e1e;
+  white-space: pre;
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
 }
 
-#linenumbers {
-  left: 0;
-  font-family: monospace;
-  line-height: 1.4em;
-  user-select: none;
+#textbox {
+  flex: 1;
   background-color: #1e1e1e;
+  color: #c5c5c5;
+  border: none;
+  resize: none;
+  padding: 10px 10px;
+  line-height: 1.4em;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  box-sizing: border-box;
+  height: auto; /* ✅ ここ重要 */
+  overflow: hidden; /* ← スクロールは禁止 */
+  margin: 0;
+  white-space: pre; /* 改行保持 */
 }
 
   </style>
@@ -105,8 +131,10 @@
   </div>
 
   <div class="editor-container">
-  <pre id="linenumbers" style="margin: 0; padding: 8px; text-align: right; color: rgb(150, 150, 150);"></pre>
-  <textarea id="textbox"></textarea>
+  <div class="editor-scroll" id="editorScroll">
+    <pre id="linenumbers">1</pre>
+    <textarea id="textbox" spellcheck="false"></textarea>
+  </div>
 </div>
 
   <div class="button-bar">
