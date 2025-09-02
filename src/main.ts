@@ -1,88 +1,85 @@
-import { consolePrinter, RubyVM } from "@ruby/wasm-wasi";
-import { File, OpenFile, PreopenDirectory, WASI } from "@bjorn3/browser_wasi_shim";
+import * as Blockly from "blockly";
+import "blockly/blocks";
+import "./ruby_generator";
 
-const response = await fetch("https://cdn.jsdelivr.net/npm/@ruby/3.4-wasm-wasi@2.7.1/dist/ruby+stdlib.wasm");
-const module = await WebAssembly.compileStreaming(response);
-
-const args = [];
-const env = [];
-
-const fds = [
-  new OpenFile(new File([])),
-  new OpenFile(new File([])),
-  new OpenFile(new File([])),
-  new PreopenDirectory("/", new Map()),
-];
-
-const wasi = new WASI(args, env, fds, { debug: false });
-
-const output = <HTMLTextAreaElement>document.getElementById("output"); // ⬅️ 追加・移動OK
-const printer = consolePrinter({
-  stderr: (text) => { output.value += "⚠️ " + text + "\n"; },
-  stdout: (text) => { output.value += text + "\n"; }
-});
-
-const { vm } = await RubyVM.instantiateModule({
-  module: module, wasip1: wasi,
-  addToImports: (imports) => {
-    printer.addToImports(imports);
-  },
-  setMemory: (memory) => {
-    printer.setMemory(memory);
+// Window型にBlocklyプロパティを追加
+declare global {
+  interface Window {
+    Blockly: typeof Blockly;
+    Ruby?: any; // 追加: Rubyプロパティを許可
   }
-});
-
-const textbox = <HTMLTextAreaElement>document.getElementById("textbox");
-const button = <HTMLButtonElement>document.getElementById("button");
-
-button.addEventListener("click", async () => {
-  output.value = ""; // ← 前回の出力を消す（好みで）
-  await vm.evalAsync(textbox.value); // 出力はconsolePrinter経由で反映済
-
-});
-
-// 行番号表示用の要素を取得
-const lineNumbers = document.getElementById("linenumbers");
-
-// 行番号を更新する関数
-function updateLineNumbers() {
-  const lines = textbox.value.split("\n").length;
-  let lineNumberText = "";
-  for (let i = 1; i <= lines; i++) {
-    lineNumberText += i + "\n";
-  }
-  if (lineNumbers) lineNumbers.textContent = lineNumberText;
 }
 
-// 入力時に行番号を更新
-textbox.addEventListener("input", updateLineNumbers);
-textbox.addEventListener("scroll", () => {
-  if (lineNumbers) {
-    lineNumbers.scrollTop = textbox.scrollTop;
-  }
-});
+window.addEventListener("DOMContentLoaded", async () => {
+  // Blocklyの初期化
+  const blocklyDiv = document.getElementById("blocklyDiv")!;
+  const workspace = Blockly.inject(blocklyDiv, {
+    toolbox: {
+      "kind": "flyoutToolbox",
+      "contents": [
+        { "kind": "block", "type": "controls_if" },
+        { "kind": "block", "type": "logic_compare" },
+        { "kind": "block", "type": "math_number" },
+        { "kind": "block", "type": "math_arithmetic" },
+        { "kind": "block", "type": "text" },
+        { "kind": "block", "type": "text_print" },
+        { "kind": "block", "type": "variables_set" },
+        { "kind": "block", "type": "variables_get" }
+      ]
+    }
+  });
 
-// 初期化時にも更新
-updateLineNumbers();
+  // Rubyジェネレーターがグローバルに追加されている前提
+  const textbox = document.getElementById("textbox") as HTMLTextAreaElement;
+  workspace.addChangeListener(() => {
+    // @ts-ignore
+    const rubyCode = (window as any).Ruby.workspaceToCode(workspace);
+    textbox.value = rubyCode;
+  });
 
-// Ctrl+Enter で実行
-textbox.addEventListener("keydown", (e) => {
-  if (e.ctrlKey && e.key === "Enter") {
-    e.preventDefault();
-    button.click(); // 実行トリガー
-  }
-});
+  // --- RubyVMの初期化・実行ボタンの処理 ---
+  const { consolePrinter, RubyVM } = await import("@ruby/wasm-wasi");
+  const { File, OpenFile, PreopenDirectory, WASI } = await import("@bjorn3/browser_wasi_shim");
 
+  const response = await fetch("https://cdn.jsdelivr.net/npm/@ruby/3.4-wasm-wasi@2.7.1/dist/ruby+stdlib.wasm");
+  const module = await WebAssembly.compileStreaming(response);
 
-window.addEventListener("DOMContentLoaded", () => {
-  const editorScroll = document.getElementById("editorScroll")!;
-  const linenumbers = document.getElementById("linenumbers")!;
-  const textbox = document.getElementById("textbox")!;
+  const args = [];
+  const env = [];
+  const fds = [
+    new OpenFile(new File([])),
+    new OpenFile(new File([])),
+    new OpenFile(new File([])),
+    new PreopenDirectory("/", new Map()),
+  ];
+  const wasi = new WASI(args, env, fds, { debug: false });
 
-  // スクロールイベントをeditorScrollのみに統一
-  editorScroll.addEventListener("scroll", () => {
-    const scrollTop = editorScroll.scrollTop;
-    linenumbers.scrollTop = scrollTop;
-    textbox.scrollTop = scrollTop;
+  const output = document.getElementById("output") as HTMLTextAreaElement;
+  const printer = consolePrinter({
+    stderr: (text: string) => { output.value += "⚠️ " + text + "\n"; },
+    stdout: (text: string) => { output.value += text + "\n"; }
+  });
+
+  const { vm } = await RubyVM.instantiateModule({
+    module: module, wasip1: wasi,
+    addToImports: (imports: any) => {
+      printer.addToImports(imports);
+    },
+    setMemory: (memory: any) => {
+      printer.setMemory(memory);
+    }
+  });
+
+  const button = document.getElementById("button") as HTMLButtonElement;
+  button.addEventListener("click", async () => {
+    output.value = "";
+    await vm.evalAsync(textbox.value);
+  });
+
+  textbox.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key === "Enter") {
+      e.preventDefault();
+      button.click();
+    }
   });
 });
