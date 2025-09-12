@@ -29,6 +29,21 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+
+  Blockly.Blocks["text_print"] = {
+  init: function () {
+    this.appendValueInput("TEXT")
+      .setCheck(null)
+      .appendField("puts"); // ← print → puts に変更
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(160);
+    this.setTooltip("テキストを出力する（Ruby: puts）");
+    this.setHelpUrl("");
+  }
+};
+
+
   // Rubyジェネレーターがグローバルに追加されている前提
   const textbox = document.getElementById("textbox") as HTMLTextAreaElement;
   workspace.addChangeListener(() => {
