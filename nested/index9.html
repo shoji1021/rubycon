@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="/R.png" />
+  <title>RubyTech</title>
+  <link rel="stylesheet" href="https://unpkg.com/blockly/media/blockly.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/anaesthetist/blockly-ruby@master/blockly_ruby.js"></script>
+  <script type="module" src="/src/nested.ts"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #e5e5e5;
+      font-family: 'Consolas', 'Roboto Mono', monospace;
+    }
+
+    .topbar {
+      background: repeating-linear-gradient(45deg, #af3f3f, #af3f3f 10px, #c74958 10px, #c74958 20px);
+      color: white;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+
+    .editor-container {
+  background-color: #1e1e1e;
+  height: 400px;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.4em;
+}
+
+.editor-split {
+  display: flex;
+  height: 100%;
+}
+#blocklyDiv {
+  width: 50%;
+  height: 400px;
+  background: #f5f5f5;
+  border-right: 1px solid #ccc;
+}
+.editor-scroll {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  overflow: auto;
+}
+    textarea {
+      background-color: #1e1e1e;
+      color: #c5c5c5;
+      border: none;
+      resize: none;
+      width: 100%;
+      height: 100%;
+      font-size: 14px;
+      padding: 10px;
+      box-sizing: border-box;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .button-bar {
+      background: #f1f1f1;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #af3f3f;
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 6px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 16px;
+    }
+
+    .output-container {
+      background-color: white;
+      border-top: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    #output {
+      width: 100%;
+      height: 200px;
+      border: none;
+      resize: none;
+      padding: 10px;
+      background-color: white;
+      color: black;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    #linenumbers {
+  width: 40px;
+  padding: 10px 5px;
+  text-align: right;
+  color: rgb(150, 150, 150);
+  background-color: #1e1e1e;
+  white-space: pre;
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
+#textbox {
+  flex: 1;
+  background-color: #1e1e1e;
+  color: #c5c5c5;
+  border: none;
+  resize: none;
+  padding: 10px 10px;
+  line-height: 1.4em;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  box-sizing: border-box;
+  height: auto; /* ✅ ここ重要 */
+  overflow: hidden; /* ← スクロールは禁止 */
+  margin: 0;
+  white-space: pre; /* 改行保持 */
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div>RubyTech</div>
+  </div>
+
+  <div class="editor-container">
+  <div class="editor-split">
+    <div id="blocklyDiv"></div>
+    <div class="editor-scroll" id="editorScroll">
+      <pre id="linenumbers">1</pre>
+      <textarea id="textbox" spellcheck="false"></textarea>
+    </div>
+  </div>
+</div>
+
+  <div class="button-bar">
+    <button id="button">▶ 実行 (Ctrl+Enter)</button>
+  </div>
+
+  <div class="output-container">
+    <div style="margin-bottom: 4px; color: #888;">出力</div>
+    <textarea id="output" readonly></textarea>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+import * as Blockly from "blockly";
+import "blockly/blocks";
+import "./ruby_generator";
+
+// Window型にBlocklyプロパティを追加
+declare global {
+  interface Window {
+    Blockly: typeof Blockly;
+    Ruby?: any; // 追加: Rubyプロパティを許可
+  }
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  // Blocklyの初期化
+  const blocklyDiv = document.getElementById("blocklyDiv")!;
+  const workspace = Blockly.inject(blocklyDiv, {
+    toolbox: {
+      "kind": "flyoutToolbox",
+      "contents": [
+        { "kind": "block", "type": "controls_if" },
+        { "kind": "block", "type": "logic_compare" },
+        { "kind": "block", "type": "math_number" },
+        { "kind": "block", "type": "math_arithmetic" },
+        { "kind": "block", "type": "text" },
+        { "kind": "block", "type": "text_print" },
+        { "kind": "block", "type": "variables_set" },
+        { "kind": "block", "type": "variables_get" }
+      ]
+    }
+  });
+
+
+  Blockly.Blocks["text_print"] = {
+  init: function () {
+    this.appendValueInput("TEXT")
+      .setCheck(null)
+      .appendField("puts"); // ← print → puts に変更
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(160);
+    this.setTooltip("テキストを出力する（Ruby: puts）");
+    this.setHelpUrl("");
+  }
+};
+
+
+  // Rubyジェネレーターがグローバルに追加されている前提
+  const textbox = document.getElementById("textbox") as HTMLTextAreaElement;
+  workspace.addChangeListener(() => {
+    // @ts-ignore
+    const rubyCode = (window as any).Ruby.workspaceToCode(workspace);
+    textbox.value = rubyCode;
+  });
+
+  // --- RubyVMの初期化・実行ボタンの処理 ---
+  const { consolePrinter, RubyVM } = await import("@ruby/wasm-wasi");
+  const { File, OpenFile, PreopenDirectory, WASI } = await import("@bjorn3/browser_wasi_shim");
+
+  const response = await fetch("https://cdn.jsdelivr.net/npm/@ruby/3.4-wasm-wasi@2.7.1/dist/ruby+stdlib.wasm");
+  const module = await WebAssembly.compileStreaming(response);
+
+  const args = [];
+  const env = [];
+  const fds = [
+    new OpenFile(new File([])),
+    new OpenFile(new File([])),
+    new OpenFile(new File([])),
+    new PreopenDirectory("/", new Map()),
+  ];
+  const wasi = new WASI(args, env, fds, { debug: false });
+
+  const output = document.getElementById("output") as HTMLTextAreaElement;
+  const printer = consolePrinter({
+    stderr: (text: string) => { output.value += "⚠️ " + text + "\n"; },
+    stdout: (text: string) => { output.value += text + "\n"; }
+  });
+
+  const { vm } = await RubyVM.instantiateModule({
+    module: module, wasip1: wasi,
+    addToImports: (imports: any) => {
+      printer.addToImports(imports);
+    },
+    setMemory: (memory: any) => {
+      printer.setMemory(memory);
+    }
+  });
+
+  const button = document.getElementById("button") as HTMLButtonElement;
+  button.addEventListener("click", async () => {
+    output.value = "";
+    await vm.evalAsync(textbox.value);
+  });
+
+  textbox.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key === "Enter") {
+      e.preventDefault();
+      button.click();
+    }
+  });
+});
