@@ -14,5 +14,19 @@ h1 {
 </head>
 <body>
 <h1><strong>いまから学習コンテンツをいくつかのレベルに分けて作成しますって。</strong></h1>
+<input type="text" id="pageNum" placeholder="ページ番号を入力">
+  <button onclick="goNext()">NEXT</button>
+
+<script>
+    function goNext() {
+      const value = document.getElementById("pageNum").value;
+      // 入力値をエスケープしたほうが安全
+      if (value) {
+        location.href = `nested/index${value}.html`;
+      } else {
+        alert("値を入力してください");
+      }
+    }
+  </script>
 </body>
 </html>
