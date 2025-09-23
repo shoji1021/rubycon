@@ -11,33 +11,53 @@
   <style>
     body {
       margin: 0;
-      background-color: #e5e5e5;
-      font-family: 'Consolas', 'Roboto Mono', monospace;
+      background: linear-gradient(135deg, #fdfdfd, #f1f1f1);
+      font-family: 'Noto Sans JP', 'Roboto', sans-serif;
+      color: #333;
+      background: linear-gradient(135deg, #fdf6f0, #fde5e5);
     }
 
-a {
-  text-decoration: none;
-}
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-.RubyTech{
-  font-weight: bold;
-  font-size: 2em;
-}
-    
-.topbar{
-  background: repeating-linear-gradient(45deg, #af3f3f, #af3f3f 10px, #c74958 10px, #c74958 20px);
-  color: white;
-  padding: 15px 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-}
+    /* ロゴ部分 */
+    .RubyTech{
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.6em;
+      display: flex;
+      align-items: center;
+    }
+    .R {
+      width: 40px;
+      height: 40px;
+      margin-left: 8px;
+    }
 
-.topbar a {
-  color: white;
-  margin-right: 16px;
-}
+    /* ナビバー */
+    .topbar{
+      background: linear-gradient(90deg, #af3f3f, #c74958);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .topbar a {
+      color: white;
+      margin-left: 16px;
+      font-size: 0.95em;
+      transition: opacity 0.2s;
+    }
+
+    .topbar a:hover {
+      opacity: 0.8;
+    }
 
     .editor-container {
   background-color: #1e1e1e;
@@ -149,25 +169,19 @@ a {
   margin: 0;
   white-space: pre; /* 改行保持 */
 }
-.R {
-    width: 40px;
-    height: 40px;
-    margin-left: 8px;
-    vertical-align: middle; /* テキストと縦位置を揃える */
-  }
   </style>
 </head>
 <body>
 
 <nav class="topbar">
-  <div class="RubyTech"><strong>RubyTech</strong><img class="R" src="/R.png"></img></div>
-  <a href="/">Home</a>
-  <a href="nested/index.html">Level1</a>
-  <a href="nested/index2.html">Level2</a>
-  <a href="nested/index3.html">Level3</a>
-  <a href="nested/index4.html">Level4</a>
-  <a href="nested/index5.html">Level5</a>
-</nav>
+    <a href="/"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a>
+    <div>
+      <a href="/"> Home</a>
+      <a href="howto.html"> 学び方</a>
+      <a href="level.html"> レベル一覧</a>
+      <a href="videos.html"> 動画</a>
+    </div>
+  </nav>
 
   <div class="editor-container">
   <div class="editor-split">

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="/R.png" />
+  <title>RubyTech</title>
+  <script type="module" src="/src/main.ts"></script>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #fdfdfd, #f1f1f1);
+      font-family: 'Noto Sans JP', 'Roboto', sans-serif;
+      color: #333;
+      background: linear-gradient(135deg, #fdf6f0, #fde5e5);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ロゴ部分 */
+    .RubyTech{
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.6em;
+      display: flex;
+      align-items: center;
+    }
+    .R {
+      width: 40px;
+      height: 40px;
+      margin-left: 8px;
+    }
+
+    /* ナビバー */
+    .topbar{
+      background: linear-gradient(90deg, #af3f3f, #c74958);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .topbar a {
+      color: white;
+      margin-left: 16px;
+      font-size: 0.95em;
+      transition: opacity 0.2s;
+    }
+
+    .topbar a:hover {
+      opacity: 0.8;
+    }
+
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="/"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a>
+    <div>
+      <a href="/"> Home</a>
+      <a href="howto.html"> 学び方</a>
+      <a href="level.html"> レベル一覧</a>
+      <a href="videos.html"> 動画</a>
+    </div>
+  </nav>
+</body>
+</html>
