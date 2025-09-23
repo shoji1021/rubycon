@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" href="/R.png" />
-  <title>RubyTech</title>
-  <link rel="stylesheet" href="https://unpkg.com/blockly/media/blockly.min.css">
-  <script src="https://cdn.jsdelivr.net/gh/anaesthetist/blockly-ruby@master/blockly_ruby.js"></script>
-  <script type="module" src="/src/main.ts"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RubyTech - Intro</title>
 <style>
   body, html {
     margin: 0; padding: 0; height: 100%; overflow: hidden;
@@ -15,17 +11,29 @@
     background: linear-gradient(135deg, #fdf6f0, #fde5e5);
   }
 
-  /* 背景パーティクル */
-  .particle {
+  /* パーティクルをまとめるラッパ */
+  .particles-container {
     position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 120, 120, 0.6);
-    animation: float linear infinite;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    overflow: hidden;
+    transition: transform 1s ease;
+    z-index: 0;
   }
 
+  .particle {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: rgba(255, 120, 120, 0.6);
+    border-radius: 50%;
+    animation: float 6s linear infinite;
+  }
+
+  /* パーティクルのふわふわアニメーション */
   @keyframes float {
-    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-    50% { opacity: 1; }
+    0%   { transform: translateY(100vh) scale(0.5); opacity: 0; }
+    30%  { opacity: 1; }
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
   }
 
@@ -39,6 +47,7 @@
     justify-content: center;
     flex-direction: column;
     transition: transform 1s ease;
+    z-index: 1;
   }
 
   .logo {
@@ -49,89 +58,71 @@
   }
 
   .skip-btn {
-  position: fixed;      /* 画面に固定 */
-  bottom: 20px;         /* 下から20px */
-  right: 20px;          /* 右から20px */
-  background: #af3f3f;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: 0.2s;
-  z-index: 10;          /* パーティクルより前面に表示 */
-}
-.skip-btn:hover { background: #c74958; }
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #af3f3f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: 0.2s;
+    z-index: 2;
+  }
+  .skip-btn:hover { background: #c74958; }
 
-/* クリック時のフェードアウトアニメーション */
-.fade-out {
-  animation: fadeOut 0.5s forwards;
-}
+  .fade-out {
+    animation: fadeOut 0.5s forwards;
+  }
 
-@keyframes fadeOut {
-  0% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0); }
-}
+  @keyframes fadeOut {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0); }
+  }
 </style>
 </head>
 <body>
 
+<!-- パーティクルコンテナ -->
+<div class="particles-container" id="particlesContainer"></div>
+
 <div class="screen" id="introScreen">
   <div class="logo">ブロックでRubyを学ぼう</div>
-  <button class="skip-btn" id="skipBtn" onclick="goToLevels()">スキップ ▶</button>
+  <button class="skip-btn" onclick="goToLevels()">スキップ ▶</button>
 </div>
 
 <script>
-  const screen = document.getElementById('introScreen');
-  const skipBtn = document.getElementById('skipBtn');
-  const maxParticles = 50;
-  let particles = [];
-
-  function createParticle() {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random()*15 + 5;
-    p.style.width = p.style.height = size + 'px';
-    p.style.left = Math.random()*100 + 'vw';
-    p.style.top = Math.random()*100 + 'vh';
-    p.style.animationDuration = (Math.random()*5 + 4) + 's';
-    document.body.appendChild(p);
-    particles.push(p);
+  // パーティクル生成
+  const container = document.getElementById("particlesContainer");
+  for (let i = 50; i < 100; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.width = p.style.height = (Math.random() * 15 + 5) + "px";
+    p.style.animationDuration = (Math.random() * 5 + 4) + "s";
+    container.appendChild(p);
   }
 
-  // 初期10個
-  for(let i=0;i<100;i++) createParticle();
-
-  // 時間とともに増やす
-  const interval = setInterval(()=>{
-    if(particles.length < maxParticles){
-      createParticle();
-    } else {
-      clearInterval(interval);
-    }
-  }, 500);
-
   function goToLevels() {
-    // ボタン消えるアニメーション
-    skipBtn.classList.add('fade-out');
+    const intro = document.getElementById("introScreen");
+    const particles = document.getElementById("particlesContainer");
 
-    // スライド遷移
-    screen.style.transform = "translateX(-100vw)";
+    // 下から上にスライド
+    intro.style.transform = "translateY(-100%)";
+    particles.style.transform = "translateY(-100%)";
 
-    // パーティクルも横に流れる
-    particles.forEach(p=>{
-      const currentLeft = parseFloat(p.style.left);
-      p.style.transition = 'all 1s linear';
-      p.style.left = (currentLeft - 100) + 'vw';
-    });
+    // スキップボタンを消す
+    const skipBtn = document.querySelector(".skip-btn");
+    skipBtn.classList.add("fade-out");
 
-    setTimeout(()=>{
-      window.location.href = 'nested/howto.html';
+    setTimeout(() => {
+      window.location.href = "nested/howto.html";
     }, 1000);
   }
 
-  // 自動遷移（5秒後）
+  // 5秒後に自動遷移
   setTimeout(goToLevels, 5000);
 </script>
 </body>
