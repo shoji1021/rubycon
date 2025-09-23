@@ -7,10 +7,152 @@
   <title>RubyTech</title>
   <script type="module" src="/src/main.ts"></script>
   <style>
+    body {
+      margin: 0;
+      background-color: #e5e5e5;
+      font-family: 'Consolas', 'Roboto Mono', monospace;
+    }
 
+    a {
+  text-decoration: none;
+}
+
+.RubyTech{
+  font-weight: bold;
+  font-size: 2em;
+}
+    
+.topbar{
+  background: repeating-linear-gradient(45deg, #af3f3f, #af3f3f 10px, #c74958 10px, #c74958 20px);
+  color: white;
+  padding: 15px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.topbar a {
+  color: white;
+  margin-right: 16px;
+}
+
+.R {
+    width: 40px;
+    height: 40px;
+    margin-left: 8px;
+    vertical-align: middle; /* テキストと縦位置を揃える */
+  }
+
+.levels {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 80px;
+      margin-left: 300px;
+      margin-right: 300px;
+    }
+
+    /* 各レベルボックス */
+    .level-box {
+      background: #fff;
+      border: 2px solid #af3f3f;
+      border-radius: 8px;
+      padding: 15px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .level-box:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(-3px);
+    }
+
+    .level-title {
+      font-weight: bold;
+      color: #af3f3f;
+      margin-bottom: 8px;
+    }
+
+    .level-title a {
+      text-decoration: none;
+      color: #af3f3f;
+    }
+
+    /* 説明文（最初は非表示 → hoverで展開） */
+    .level-desc {
+      max-height: 0;
+      opacity: 0;
+      transition: all 0.4s ease;
+      overflow: hidden;
+      font-size: 0.9em;
+      color: #333;
+    }
+
+    .level-box:hover .level-desc {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
+<nav class="topbar">
+  <div class="RubyTech"><strong>RubyTech</strong><img class="R" src="/R.png"></img></div>
+  <a href="/">Home</a>
+  <a href="nested/index.html">Level1</a>
+  <a href="nested/index2.html">Level2</a>
+  <a href="nested/index3.html">Level3</a>
+  <a href="nested/index4.html">Level4</a>
+  <a href="nested/index5.html">Level5</a>
+</nav>
 
+<div class="levels">
+  <a href="nested/index.html">
+    <div class="level-box">
+      <div class="level-title">Level 1</div>
+      <div class="level-desc">
+        ここに Level1 の問題文と説明が入ります。<br>
+        マウスをのせると展開されます。
+      </div>
+    </div>
+    </a>
+<a href="nested/index2.html">
+    <div class="level-box">
+      <div class="level-title">Level 2</div>
+      <div class="level-desc">
+        ここに Level2 の問題文と説明が入ります。
+      </div>
+    </div>
+    </a>
+
+    <a href="nested/index3.html">
+    <div class="level-box">
+      <div class="level-title">Level 3></div>
+      <div class="level-desc">
+        ここに Level3 の問題文と説明が入ります。
+      </div>
+    </div>
+  </a>
+    
+  <a href="nested/index4.html">
+    <div class="level-box">
+      <div class="level-title">Level 4</div>
+      <div class="level-desc">
+        ここに Level3 の問題文と説明が入ります。
+      </div>
+    </div>
+    </a>
+
+    <a href="nested/index5.html">
+    <div class="level-box">
+      <div class="level-title">Level 5</div>
+      <div class="level-desc">
+        ここに Level3 の問題文と説明が入ります。
+      </div>
+    </div>
+    </a>
+  </div>
 </body>
 </html>

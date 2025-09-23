@@ -15,15 +15,29 @@
       font-family: 'Consolas', 'Roboto Mono', monospace;
     }
 
-    .topbar {
-      background: repeating-linear-gradient(45deg, #af3f3f, #af3f3f 10px, #c74958 10px, #c74958 20px);
-      color: white;
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-weight: bold;
-    }
+a {
+  text-decoration: none;
+}
+
+.RubyTech{
+  font-weight: bold;
+  font-size: 2em;
+}
+    
+.topbar{
+  background: repeating-linear-gradient(45deg, #af3f3f, #af3f3f 10px, #c74958 10px, #c74958 20px);
+  color: white;
+  padding: 15px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.topbar a {
+  color: white;
+  margin-right: 16px;
+}
 
     .editor-container {
   background-color: #1e1e1e;
@@ -135,14 +149,25 @@
   margin: 0;
   white-space: pre; /* 改行保持 */
 }
-
+.R {
+    width: 40px;
+    height: 40px;
+    margin-left: 8px;
+    vertical-align: middle; /* テキストと縦位置を揃える */
+  }
   </style>
 </head>
 <body>
 
-  <div class="topbar">
-    <div>RubyTech</div>
-  </div>
+<nav class="topbar">
+  <div class="RubyTech"><strong>RubyTech</strong><img class="R" src="/R.png"></img></div>
+  <a href="/">Home</a>
+  <a href="nestedindex.html">Level1</a>
+  <a href="nestedindex2.html">Level2</a>
+  <a href="nestedindex3.html">Level3</a>
+  <a href="nestedindex4.html">Level4</a>
+  <a href="nestedindex5.html">Level5</a>
+</nav>
 
   <div class="editor-container">
   <div class="editor-split">
