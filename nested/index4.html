@@ -59,6 +59,13 @@
       opacity: 0.8;
     }
 
+
+    .container{
+      display: flex;
+      flex-direction: column;
+      height: 100vh; 
+    }
+
     .editor-container {
   background-color: #1e1e1e;
   height: 400px;
@@ -66,23 +73,27 @@
   font-family: 'Courier New', monospace;
   font-size: 14px;
   line-height: 1.4em;
+  flex: 2; /* 出力より広めに比率を与える */
+  display: flex;
 }
 
 .editor-split {
   display: flex;
-  height: 100%;
+  flex: 1;
 }
 #blocklyDiv {
   width: 50%;
-  height: 400px;
+  height: 100%;
   background: #f5f5f5;
   border-right: 1px solid #ccc;
+  flex: 1;
 }
 .editor-scroll {
   width: 50%;
   height: 100%;
+  flex: 1; /* 左右等分 */
   display: flex;
-  overflow: auto;
+  overflow: hidden; 
 }
     textarea {
       background-color: #1e1e1e;
@@ -121,6 +132,9 @@
       background-color: white;
       border-top: 1px solid #ccc;
       padding: 10px;
+      flex: 1; /* 全体に対する比率を調整 */
+      display: flex;
+      flex-direction: column;
     }
 
     #output {
@@ -134,6 +148,7 @@
       font-family: inherit;
       font-size: 14px;
       outline: none;
+      flex: 1;
     }
 
     #linenumbers {
@@ -149,31 +164,33 @@
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
-  margin: 0;
+  margin: 0;          /* ✅ はみ出し防止 */
+  flex-shrink: 0;     /* ✅ 横幅を固定する */
 }
 
 #textbox {
-  flex: 1;
+  flex: 1;            /* ✅ 残りの幅を全部使う */
   background-color: #1e1e1e;
   color: #c5c5c5;
   border: none;
   resize: none;
-  padding: 10px 10px;
+  padding: 10px;
   line-height: 1.4em;
   font-family: inherit;
   font-size: inherit;
   outline: none;
   box-sizing: border-box;
-  height: auto; /* ✅ ここ重要 */
-  overflow: hidden; /* ← スクロールは禁止 */
-  margin: 0;
-  white-space: pre; /* 改行保持 */
+  margin: 0;          /* ✅ 左右のはみ出し抑制 */
+  white-space: pre;
+  overflow: auto;
 }
   </style>
 </head>
 <body>
 
-<nav class="topbar">
+<div class="container">
+
+  <nav class="topbar">
     <a href="/"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a>
     <div>
       <a href="/"> Home</a>
@@ -185,7 +202,7 @@
 
   <div class="editor-container">
   <div class="editor-split">
-    <div id="blocklyDiv"></div>
+    <div class="blocklyDiv" id="blocklyDiv"></div>
     <div class="editor-scroll" id="editorScroll">
       <pre id="linenumbers">1</pre>
       <textarea id="textbox" spellcheck="false"></textarea>
@@ -202,5 +219,6 @@
     <textarea id="output" readonly></textarea>
   </div>
 
+</div>
 </body>
 </html>
