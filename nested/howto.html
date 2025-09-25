@@ -46,6 +46,10 @@
       justify-content: space-between;
       font-weight: bold;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
     }
 
     .topbar a {
@@ -59,17 +63,180 @@
       opacity: 0.8;
     }
 
+    .nav-links{
+      margin-right: 50px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 40px;
+      color: #af3f3f;
+    }
+
+    /* タイムライン */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      position: relative;
+      margin-top: 100px;
+      margin-left: 200px;
+      margin-right: 200px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 20px;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: #af3f3f;
+      border-radius: 2px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      position: relative;
+    }
+
+    .icon {
+      min-width: 40px;
+      min-height: 40px;
+      background: #af3f3f;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .content {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      flex: 1;
+    }
+
+    .content h3 {
+      margin: 0 0 8px;
+      color: #af3f3f;
+    }
+
+    .links {
+      margin-top: 8px;
+      font-size: 0.9em;
+    }
+
+    .links a {
+      margin-right: 12px;
+      color: #c74958;
+      font-weight: bold;
+    }
+
+    .next button{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #af3f3f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: 0.2s;
+    z-index: 2;
+  }
+
+  .next button:hover { background: #c74958; }
+
   </style>
 </head>
 <body>
+
   <nav class="topbar">
     <a href="/"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a>
-    <div>
+    <div class="nav-links">
       <a href="/"> Home</a>
       <a href="howto.html"> 学び方</a>
       <a href="level.html"> レベル一覧</a>
       <a href="videos.html"> 動画</a>
     </div>
   </nav>
+
+  <div class="timeline">
+      <div class="step">
+        <div class="icon">1</div>
+        <div class="content">
+          <h3>レベルごとに動画を見る</h3>
+          <p>まずは解説動画を見て学びます。</p>
+          <div class="links">
+            <a href="videos.html">🎥 動画一覧</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="icon">2</div>
+        <div class="content">
+          <h3>動画の後に問題を解く</h3>
+          <p>動画で学んだことを実際に問題で確認しましょう。</p>
+          <div class="links">
+            <a href="level.html">🧩 レベル一覧</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="icon">3</div>
+        <div class="content">
+          <h3>次のレベルに進む</h3>
+          <p>問題をクリアしたら次のレベルへ！</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="icon">4</div>
+        <div class="content">
+          <h3>復習もできる</h3>
+          <p>それぞれのレベルと動画は一覧からいつでも復習できます。</p>
+          <div class="links">
+            <a href="level.html">🧩 レベル一覧</a>
+            <a href="videos.html">🎥 動画一覧</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ★追加: STEP 5 GOAL -->
+      <div class="step">
+        <div class="icon">5</div>
+        <div class="content">
+          <h3>GOAL</h3>
+          <p>全てのレベルをクリア！おめでとうございます🎉</p>
+          <div class="links">
+            <a href="/">🏠 ホームへ戻る</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="next" href="level.html"><button>レベル一覧へ</button></a>
+    </div>
+  </div>
 </body>
 </html>
