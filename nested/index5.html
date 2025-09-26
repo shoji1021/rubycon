@@ -129,27 +129,53 @@
     }
 
     .output-container {
-      background-color: white;
-      border-top: 1px solid #ccc;
-      padding: 10px;
-      flex: 1; /* 全体に対する比率を調整 */
-      display: flex;
-      flex-direction: column;
-    }
+  background-color: white;
+  border-top: 1px solid #ccc;
+  flex: 1; /* 縦方向の比率 */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
 
-    #output {
-      width: 100%;
-      height: 200px;
-      border: none;
-      resize: none;
-      padding: 10px;
-      background-color: white;
-      color: black;
-      font-family: inherit;
-      font-size: 14px;
-      outline: none;
-      flex: 1;
-    }
+/* 横並びに分割 */
+.output-split {
+  display: flex;
+  flex: 1;
+  gap: 10px; /* 出力と問題の間隔 */
+}
+
+/* 出力側 */
+.output-box, .problem-box {
+  flex: 1; /* 1:1 の比率 */
+  display: flex;
+  flex-direction: column;
+}
+
+#output {
+  flex: 1;
+  width: 100%;
+  border: none;
+  resize: none;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* 問題表示部分 */
+#problem {
+  flex: 1;
+  padding: 10px;
+  background: #fdf6f0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.5em;
+}
 
     #linenumbers {
   width: 40px;
@@ -215,8 +241,22 @@
   </div>
 
   <div class="output-container">
-    <div style="margin-bottom: 4px; color: #888;">出力</div>
-    <textarea id="output" readonly></textarea>
+    <!-- 出力と問題を横並びにする -->
+    <div class="output-split">
+      <!-- 出力エリア -->
+      <div class="output-box">
+        <div style="margin-bottom: 4px; color: #888;">出力</div>
+        <textarea id="output" readonly></textarea>
+      </div>
+
+      <!-- 問題エリア -->
+      <div class="problem-box">
+        <div style="margin-bottom: 4px; color: #888;">問題</div>
+        <div id="problem">
+          <p>ここに問題文を表示します。</p>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>

@@ -46,6 +46,10 @@
       justify-content: space-between;
       font-weight: bold;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
     }
 
     .topbar a {
@@ -58,12 +62,16 @@
     .topbar a:hover {
       opacity: 0.8;
     }
+
+    .nav-links{
+      margin-right: 50px;
+    }
   </style>
 </head>
 <body>
   <nav class="topbar">
     <a href="/"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a>
-    <div>
+    <div class="nav-links">
       <a href="/"> Home</a>
       <a href="howto.html"> 学び方</a>
       <a href="level.html"> レベル一覧</a>

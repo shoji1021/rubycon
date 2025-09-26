@@ -46,6 +46,10 @@
       justify-content: space-between;
       font-weight: bold;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
     }
 
     .topbar a {
@@ -59,13 +63,16 @@
       opacity: 0.8;
     }
 
+    .nav-links{
+      margin-right: 50px;
+    }
     /* レベル一覧 */
     .levels {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 35px;
       max-width: 800px;
-      margin: 60px auto;
+      margin: 150px auto;
       padding: 0 20px;
     }
 
@@ -112,7 +119,7 @@
 <body>
   <nav class="topbar">
     <a href="/"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a>
-    <div>
+    <div class="nav-links">
       <a href="/"> Home</a>
       <a href="howto.html"> 学び方</a>
       <a href="level.html"> レベル一覧</a>
@@ -125,8 +132,8 @@
       <div class="level-box">
         <div class="level-title">Level 1</div>
         <div class="level-desc">
-          まずは、Rubyとは何かを学びましょう。<br>  
-          ここでは、Rubyの基本的な文法や概念を紹介します。<br>
+          まずは、<strong>Rubyとは何かを学びましょう。</strong><br>  
+          ここでは、<strong>Rubyの基本的な文法や概念</strong>を紹介します。<br>
           さらに、今回の教材で使用するBlocklyの使い方も説明します。<br>
           さあ、プログラミングの世界へ一歩踏み出しましょう！
         </div>
@@ -136,7 +143,11 @@
       <div class="level-box">
         <div class="level-title">Level 2</div>
         <div class="level-desc">
-          ここに Level2 の問題文と説明が入ります。
+          Rubyの基本的な<strong>「puts」</strong>を学びます。まずは、数字です。<br>
+          画面に数字を出力することが最初の一歩です。<br>
+          これは<strong>ほかの言語でも基本的に最初に行うこと</strong>です。<br>
+          例としては<strong>Pythonのprint()</strong>や<strong>JavaScriptのconsole.log()</strong>などがあります。<br>
+          さあ、数字を出力してみましょう！
         </div>
       </div>
     </a>
@@ -144,7 +155,11 @@
       <div class="level-box">
         <div class="level-title">Level 3</div>
         <div class="level-desc">
-          ここに Level3 の問題文と説明が入ります。
+          次に文字列の出力です。<br>
+          Level 2で行ったRubyの基本的な<strong>「puts」</strong>の<strong>数字出力を文字列出力に置き換え</strong>ます。<br>
+          なので、基本的にはLevel 2とほとんど同じ流れになります。<br>
+          <strong>Level 2で使った技術を生かしてLevel 3もクリアしよう。</strong><br>
+          さあ、文字列を出力してみましょう！
         </div>
       </div>
     </a>
@@ -152,7 +167,10 @@
       <div class="level-box">
         <div class="level-title">Level 4</div>
         <div class="level-desc">
-          ここに Level4 の問題文と説明が入ります。
+          次は、数字の<strong>四則演算</strong>を学びます。<br>
+          Level 2で学んだ<strong>「puts」</strong>を使って、<strong>足し算、引き算、掛け算、割り算</strong>を行います。<br>
+          ここでは、<strong>Rubyでの四則演算の基本的な使い方</strong>を学びます。<br>
+          さあ、四則演算を使ってみましょう！
         </div>
       </div>
     </a>
@@ -161,7 +179,7 @@
         <div class="level-title">Level 5</div>
         <div class="level-desc">
           自分で自由にコードを書いてみましょう！<br>
-          レベル1〜4で学んだことを活かして、<br>
+          <strong>Level 1〜4で学んだことを活かして、</strong><br>
           自分だけのプログラムを作成してみてください。<br>
         </div>
       </div>
