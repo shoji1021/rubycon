@@ -18,13 +18,12 @@ window.addEventListener("DOMContentLoaded", async () => {
       "kind": "flyoutToolbox",
       "contents": [
         { "kind": "block", "type": "controls_if" },
+        { "kind": "block", "type": "logic_boolean" },
         { "kind": "block", "type": "logic_compare" },
         { "kind": "block", "type": "math_number" },
         { "kind": "block", "type": "math_arithmetic" },
         { "kind": "block", "type": "text" },
         { "kind": "block", "type": "text_print" },
-        { "kind": "block", "type": "variables_set" },
-        { "kind": "block", "type": "variables_get" }
       ]
     }
   });
@@ -42,6 +41,76 @@ window.addEventListener("DOMContentLoaded", async () => {
     this.setHelpUrl("");
   }
 };
+
+// --- 数値リテラル ---
+Blockly.Blocks["math_number"].init = function () {
+  this.setColour(230);
+  this.appendDummyInput().appendField(new Blockly.FieldNumber(0), "NUM");
+  this.setOutput(true, "Number");
+};
+
+// --- テキストリテラル ---
+Blockly.Blocks["text"].init = function () {
+  this.setColour(160);
+  this.appendDummyInput().appendField(new Blockly.FieldTextInput(""), "TEXT");
+  this.setOutput(true, "String");
+};
+
+// --- if文（シンプル版）---
+Blockly.Blocks["controls_if"] = {
+  init: function () {
+    this.setColour(210);
+    this.appendValueInput("IF0").appendField("if");
+    this.appendStatementInput("DO0").appendField("then");
+    this.appendStatementInput("ELSE").appendField("else");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+  }
+};
+
+
+// --- 比較演算子 ---
+Blockly.Blocks["logic_compare"] = {
+  init: function () {
+    this.setColour(210);
+    this.appendValueInput("A");
+    this.appendDummyInput().appendField(
+      new Blockly.FieldDropdown([
+        ["==", "EQ"],
+        ["!=", "NEQ"],
+        ["<", "LT"],
+        ["<=", "LTE"],
+        [">", "GT"],
+        [">=", "GTE"]
+      ]),
+      "OP"
+    );
+    this.appendValueInput("B");
+    this.setOutput(true, "Boolean");
+  }
+};
+
+// --- 四則演算 ---
+Blockly.Blocks["math_arithmetic"] = {
+  init: function () {
+    this.setColour(230);
+    this.appendValueInput("A");
+    this.appendDummyInput().appendField(
+      new Blockly.FieldDropdown([
+        ["+", "ADD"],
+        ["-", "MINUS"],
+        ["*", "MULTIPLY"],
+        ["/", "DIVIDE"],
+        ["**", "POWER"]
+      ]),
+      "OP"
+    );
+    this.appendValueInput("B");
+    this.setInputsInline(true);
+    this.setOutput(true, "Number");
+  }
+};
+
 
 
   // Rubyジェネレーターがグローバルに追加されている前提

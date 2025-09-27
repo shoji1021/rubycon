@@ -210,6 +210,71 @@
   white-space: pre;
   overflow: auto;
 }
+
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none; /* 最初は非表示 */
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+
+  /* ✅ ポップアップ本体 */
+  .popup {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+    width: 300px;
+  }
+
+  .popup h2 {
+    margin: 0 0 12px;
+    font-size: 1.5em;
+    color: #af3f3f;
+  }
+
+  .popup button {
+    background: #af3f3f;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .popup button:hover {
+    opacity: 0.85;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* ✅ 不正解通知 */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #e74c3c;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: none;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+  }
   </style>
 </head>
 <body>
@@ -237,7 +302,7 @@
 </div>
 
   <div class="button-bar">
-    <button id="button">▶ 実行 (Ctrl+Enter)</button>
+    <button id="button">▶ 二回クリック (Ctrl+Enter)</button>
   </div>
 
   <div class="output-container">
@@ -253,7 +318,9 @@
       <div class="problem-box">
         <div style="margin-bottom: 4px; color: #888;">問題</div>
         <div id="problem">
-          <p>ここに問題文を表示します。</p>
+          <p>自分で自由にコードを書いてみましょう！
+Level 1〜4で学んだことを活かして、<br>
+自分だけのプログラムを作成してみてください。</p>
         </div>
       </div>
     </div>
