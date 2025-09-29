@@ -299,7 +299,7 @@
   <!-- ✅ 最初の全画面オーバーレイ動画 -->
 <div id="videoOverlay">
   <video id="introVideo" autoplay muted playsinline controls>
-    <source src="/video/level2.mp4" type="video/mp4">
+    <source src="/level2.mp4" type="video/mp4">
     お使いのブラウザは動画をサポートしていません
   </video>
 </div>
@@ -363,7 +363,7 @@
 </div>
 
 <script>
-window.addEventListener("load", () => {
+window.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("introVideo");
   const overlay = document.getElementById("videoOverlay");
 
