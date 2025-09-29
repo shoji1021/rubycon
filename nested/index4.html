@@ -275,9 +275,34 @@
     from { opacity: 0; transform: translate(-50%, 20px); }
     to { opacity: 1; transform: translate(-50%, 0); }
   }
+
+  /* ✅ 全画面オーバーレイ */
+#videoOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#videoOverlay video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
   </style>
 </head>
 <body>
+  <!-- ✅ 最初の全画面オーバーレイ動画 -->
+<div id="videoOverlay">
+  <video id="introVideo" autoplay muted playsinline controls>
+    <source src="/video/level4.mp4" type="video/mp4">
+    お使いのブラウザは動画をサポートしていません
+  </video>
+</div>
 
   <div class="overlay" id="overlay">
     <div class="popup">
@@ -340,6 +365,27 @@
 </div>
 
 <script>
+window.addEventListener("load", () => {
+  const video = document.getElementById("introVideo");
+  const overlay = document.getElementById("videoOverlay");
+
+  // 自動再生 → フルスクリーン試行
+  video.play().then(() => {
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
+    } else if (video.webkitRequestFullscreen) { // Safari対応
+      video.webkitRequestFullscreen();
+    }
+  }).catch(err => {
+    console.warn("自動再生に失敗:", err);
+  });
+
+  // ✅ 動画終了時にオーバーレイを非表示
+  video.addEventListener("ended", () => {
+    overlay.style.display = "none";
+  });
+});
+
   const runButton = document.getElementById("button");
   const outputBox = document.getElementById("output");
   const overlay = document.getElementById("overlay");
