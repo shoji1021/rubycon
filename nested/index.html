@@ -7,7 +7,7 @@
   <title>RubyTech</title>
   <link rel="stylesheet" href="https://unpkg.com/blockly/media/blockly.min.css">
   <script src="https://cdn.jsdelivr.net/gh/anaesthetist/blockly-ruby@master/blockly_ruby.js"></script>
-  <script type="module" src="/src/nested.ts" defer></script>
+
   <style>
     body {
       margin: 0;
@@ -363,6 +363,8 @@
 
 </div>
 
+<script type="module" src="/src/nested.ts"></script>
+
 <script>
 window.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("introVideo");
@@ -377,9 +379,11 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }).catch(err => {
     console.warn("自動再生に失敗:", err);
+    // 必要ならユーザーに案内
+    // alert("動画の自動再生やフルスクリーンが許可されていません。クリックで再生してください。");
   });
 
-  // ✅ 動画終了時にオーバーレイを非表示
+  // 動画終了時にオーバーレイを非表示
   video.addEventListener("ended", () => {
     overlay.style.display = "none";
   });
@@ -421,6 +425,6 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 </script>
 
-<script type="module" src="/src/nested.ts"></script>
+
 </body>
 </html>
