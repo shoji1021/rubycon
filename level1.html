@@ -275,8 +275,7 @@
     from { opacity: 0; transform: translate(-50%, 20px); }
     to { opacity: 1; transform: translate(-50%, 0); }
   }
-
-  /* ✅ 全画面オーバーレイ */
+/* ✅ 全画面オーバーレイ */
 #videoOverlay {
   position: fixed;
   top: 0; left: 0;
@@ -296,14 +295,15 @@
   </style>
 </head>
 <body>
-  <!-- ✅ 最初の全画面オーバーレイ動画 -->
+<!-- ✅ 最初の全画面オーバーレイ動画 -->
 <div id="videoOverlay">
   <video id="introVideo" autoplay muted playsinline controls>
-    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level2.mp4
+    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level1.mp4
 " type="video/mp4">
     お使いのブラウザは動画をサポートしていません
   </video>
 </div>
+
 
   <div class="overlay" id="overlay">
     <div class="popup">
@@ -355,7 +355,7 @@
       <div class="problem-box">
         <div style="margin-bottom: 4px; color: #888;">問題</div>
         <div id="problem">
-          <p>指定の数字を出力させよう!<br>「2」を出力してください。</p>
+          <p>ここに問題文を表示します。<br> 例）指定の数字を出力させよう!「2025」を出力してください。</p>
         </div>
       </div>
     </div>
@@ -363,7 +363,7 @@
 
 </div>
 
-  <script type="module" src="/src/nested.ts" defer></script>
+<script type="module" src="/src/level.ts"></script>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
@@ -379,14 +379,16 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }).catch(err => {
     console.warn("自動再生に失敗:", err);
+    // 必要ならユーザーに案内
+    // alert("動画の自動再生やフルスクリーンが許可されていません。クリックで再生してください。");
   });
 
-  // ✅ 動画終了時にオーバーレイを非表示
+  // 動画終了時にオーバーレイを非表示
   video.addEventListener("ended", () => {
     overlay.style.display = "none";
   });
 });
-  
+
   const runButton = document.getElementById("button");
   const outputBox = document.getElementById("output");
   const overlay = document.getElementById("overlay");
@@ -407,7 +409,7 @@ window.addEventListener("DOMContentLoaded", () => {
     clickCount = 0;
 
     const result = outputBox.value.trim();
-    if (result === "2") {
+    if (result === "2025") {
       overlay.style.display = "flex"; // 正解
     } else {
       toast.style.display = "block"; // 不正解

@@ -299,22 +299,11 @@
   <!-- ✅ 最初の全画面オーバーレイ動画 -->
 <div id="videoOverlay">
   <video id="introVideo" autoplay muted playsinline controls>
-    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level3.mp4
+    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level5.mp4
 " type="video/mp4">
     お使いのブラウザは動画をサポートしていません
   </video>
 </div>
-
-  <div class="overlay" id="overlay">
-    <div class="popup">
-      <h2>正解！</h2>
-      <p>レベルクリアしました！</p>
-      <button id="closePopup">レベル一覧へ戻る</button>
-    </div>
-  </div>
-
-  <!-- ✅ 不正解通知 -->
-  <div class="toast" id="toast">不正解。もう一度挑戦！</div>
 
 <div class="container">
 
@@ -355,7 +344,9 @@
       <div class="problem-box">
         <div style="margin-bottom: 4px; color: #888;">問題</div>
         <div id="problem">
-          <p>Level 2の応用です。<br>指定の文字列を出力させよう!<br>「RubyTech」を出力してください。</p>
+          <p>自分で自由にコードを書いてみましょう！
+Level 1〜4で学んだことを活かして、<br>
+自分だけのプログラムを作成してみてください。</p>
         </div>
       </div>
     </div>
@@ -363,10 +354,10 @@
 
 </div>
 
-  <script type="module" src="/src/nested.ts" defer></script>
+  <script type="module" src="/src/level.ts" defer></script>
 
 <script>
-window.addEventListener("DOMContentLoaded", () => {
+  window.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("introVideo");
   const overlay = document.getElementById("videoOverlay");
 
@@ -386,41 +377,6 @@ window.addEventListener("DOMContentLoaded", () => {
     overlay.style.display = "none";
   });
 });
-
-  const runButton = document.getElementById("button");
-  const outputBox = document.getElementById("output");
-  const overlay = document.getElementById("overlay");
-  const closePopup = document.getElementById("closePopup");
-  const toast = document.getElementById("toast");
-
-  let clickCount = 0; // クリック回数カウント
-
-  runButton.addEventListener("click", () => {
-    clickCount++;
-
-    if (clickCount === 1) {
-      // ✅ 1回目は実行だけ（ポップアップなし）
-      return;
-    }
-
-    // ✅ 2回目以降は判定してリセット
-    clickCount = 0;
-
-    const result = outputBox.value.trim();
-    if (result === "RubyTech") {
-      overlay.style.display = "flex"; // 正解
-    } else {
-      toast.style.display = "block"; // 不正解
-      setTimeout(() => {
-        toast.style.display = "none";
-      }, 2000);
-    }
-  });
-
-  closePopup.addEventListener("click", () => {
-    overlay.style.display = "none";
-    window.location.href = "level.html";
-  });
 </script>
 </body>
 </html>

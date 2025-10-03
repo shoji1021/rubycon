@@ -8,15 +8,11 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        nested1: resolve(__dirname, 'nested/index.html'),
-        nested2: resolve(__dirname, 'nested/index2.html'),
-        nested3: resolve(__dirname, 'nested/index3.html'),
-        nested4: resolve(__dirname, 'nested/index4.html'),
-        nested5: resolve(__dirname, 'nested/index5.html'),
-        nested6: resolve(__dirname, 'nested/level.html'),
-        nested7: resolve(__dirname, 'nested/howto.html'),
-        nested8: resolve(__dirname, 'nested/videos.html'),
+        nested1: resolve(__dirname, 'level1.html'),
+        nested2: resolve(__dirname, 'level2.html'),
+        nested3: resolve(__dirname, 'level3.html'),
+        nested4: resolve(__dirname, 'level4.html'),
+        nested5: resolve(__dirname, 'level5.html'),
       },
     },
   },
