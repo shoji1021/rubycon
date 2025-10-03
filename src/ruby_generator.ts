@@ -38,17 +38,25 @@ Blockly.Blocks["logic_boolean"] = {
 };
 
 // --- 数値リテラル ---
-Blockly.Blocks["math_number"].init = function () {
-  this.setColour(230);
-  this.appendDummyInput().appendField(new Blockly.FieldNumber(0), "NUM");
-  this.setOutput(true, "Number");
+Blockly.Blocks["math_number"] = {
+  init: function () {
+    this.setColour(230);
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldNumber(0), "NUM"); // 直接入力OK
+    this.setOutput(true, "Number");
+    this.setTooltip("数値を入力");
+  }
 };
 
 // --- テキストリテラル ---
-Blockly.Blocks["text"].init = function () {
-  this.setColour(160);
-  this.appendDummyInput().appendField(new Blockly.FieldTextInput(""), "TEXT");
-  this.setOutput(true, "String");
+Blockly.Blocks["text"] = {
+  init: function () {
+    this.setColour(160);
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldTextInput(""), "TEXT"); // 直接入力OK
+    this.setOutput(true, "String");
+    this.setTooltip("文字列を入力");
+  }
 };
 
 // --- if文（シンプル版）---
@@ -127,12 +135,14 @@ Blockly.Blocks["math_arithmetic"] = {
 
 // --- 数値リテラル ---
 (window as any).Ruby.forBlock["math_number"] = function (block: any) {
-  return [block.getFieldValue("NUM"), (window as any).Ruby.ORDER_ATOMIC];
+  const num = block.getFieldValue("NUM"); // 入力値を取得
+  return [num, (window as any).Ruby.ORDER_ATOMIC];
 };
 
 // --- テキストリテラル ---
 (window as any).Ruby.forBlock["text"] = function (block: any) {
-  const code = (window as any).Ruby.quote_(block.getFieldValue("TEXT"));
+  const txt = block.getFieldValue("TEXT"); // 入力値を取得
+  const code = `"${txt}"`; // Ruby用にクォート
   return [code, (window as any).Ruby.ORDER_ATOMIC];
 };
 
