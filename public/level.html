@@ -9,10 +9,10 @@
   <style>
     body {
       margin: 0;
-      background: linear-gradient(135deg, #fdfdfd, #f1f1f1);
+      background: linear-gradient(135deg, #fa676b, #fa676b);
       font-family: 'Noto Sans JP', 'Roboto', sans-serif;
       color: #333;
-      background: linear-gradient(135deg, #fdf6f0, #fde5e5);
+      text-align: center;
     }
 
     a {
@@ -21,13 +21,14 @@
     }
 
     /* ロゴ部分 */
-    .RubyTech{
+    .RubyTech {
       font-family: 'Nunito', sans-serif;
       font-weight: 800;
       font-size: 1.6em;
       display: flex;
       align-items: center;
     }
+
     .R {
       width: 40px;
       height: 40px;
@@ -35,8 +36,8 @@
     }
 
     /* ナビバー */
-    .topbar{
-      background: linear-gradient(90deg, #af3f3f, #c74958);
+    .topbar {
+      background: linear-gradient(90deg, #470d1c, #40121e);
       color: white;
       padding: 12px 20px;
       display: flex;
@@ -61,19 +62,35 @@
       opacity: 0.8;
     }
 
-    .nav-links{
+    .nav-links {
       margin-right: 50px;
     }
+
+    h1 {
+      font-size: 2.8em;
+      text-align: center;
+      color: #470d1c; /* 深紅 */
+      margin: 100px auto 60px;
+      display: inline-block;
+      background: #fff; /* 白背景 */
+      padding: 20px 60px;
+      border: 3px solid #470d1c;
+      border-radius: 16px; /* 角を少し丸く */
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* 軽い立体感 */
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
     /* レベル一覧 */
     .levels {
-      top: 0;
       display: flex;
       flex-direction: column;
       gap: 35px;
       max-width: 800px;
-      margin: 150px auto;
+      margin: 0 auto 150px;
       padding: 0 20px;
-      padding-top: 0;
+      text-align: left;
     }
 
     .level-box {
@@ -94,7 +111,7 @@
 
     .level-title {
       font-weight: 700;
-      color: #af3f3f;
+      color: #470d1c;
       font-size: 1.2em;
       margin-bottom: 6px;
     }
@@ -125,23 +142,24 @@
     </div>
   </nav>
 
-  
+  <strong><h1>レベル一覧</h1></strong>
 
   <div class="levels" id="levels">
     <a href="level1.html">
       <div class="level-box">
-        <div class="level-title">Level 1</div>
+        <div class="level-title">Level 1　（Rubyとは）</div>
         <div class="level-desc">
-          まずは、<strong>Rubyとは何かを学びましょう。</strong><br>  
+          まずは、<strong>Rubyとは何かを学びましょう。</strong><br>
           ここでは、<strong>Rubyの基本的な文法や概念</strong>を紹介します。<br>
           さらに、今回の教材で使用するBlocklyの使い方も説明します。<br>
           さあ、プログラミングの世界へ一歩踏み出しましょう！
         </div>
       </div>
     </a>
+
     <a href="level2.html">
       <div class="level-box">
-        <div class="level-title">Level 2</div>
+        <div class="level-title">Level 2　（puts・数字）</div>
         <div class="level-desc">
           Rubyの基本的な<strong>「puts」</strong>を学びます。まずは、数字です。<br>
           画面に数字を出力することが最初の一歩です。<br>
@@ -151,9 +169,10 @@
         </div>
       </div>
     </a>
+
     <a href="level3.html">
       <div class="level-box">
-        <div class="level-title">Level 3</div>
+        <div class="level-title">Level 3　（puts・文字列）</div>
         <div class="level-desc">
           次に文字列の出力です。<br>
           Level 2で行ったRubyの基本的な<strong>「puts」</strong>の<strong>数字出力を文字列出力に置き換え</strong>ます。<br>
@@ -163,9 +182,10 @@
         </div>
       </div>
     </a>
+
     <a href="level4.html">
       <div class="level-box">
-        <div class="level-title">Level 4</div>
+        <div class="level-title">Level 4　（puts・四則演算）</div>
         <div class="level-desc">
           次は、数字の<strong>四則演算</strong>を学びます。<br>
           Level 2で学んだ<strong>「puts」</strong>を使って、<strong>足し算、引き算、掛け算、割り算</strong>を行います。<br>
@@ -174,9 +194,10 @@
         </div>
       </div>
     </a>
+
     <a href="level5.html">
       <div class="level-box">
-        <div class="level-title">Level 5</div>
+        <div class="level-title">Level 5　（自由にコーディング）</div>
         <div class="level-desc">
           自分で自由にコードを書いてみましょう！<br>
           <strong>Level 1〜4で学んだことを活かして、</strong><br>

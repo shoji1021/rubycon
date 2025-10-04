@@ -7,104 +7,179 @@
   <title>RubyTech</title>
   <link rel="stylesheet" href="https://unpkg.com/blockly/media/blockly.min.css">
   <style>
-    body { margin: 0; background: linear-gradient(135deg, #fdfdfd, #f1f1f1); font-family: 'Noto Sans JP', 'Roboto', sans-serif; color: #333; background: linear-gradient(135deg, #fdf6f0, #fde5e5); } a { text-decoration: none; color: inherit; } /* ロゴ部分 */ .RubyTech{ font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.6em; display: flex; align-items: center; } .R { width: 40px; height: 40px; margin-left: 8px; } /* ナビバー */ .topbar{ background: linear-gradient(90deg, #af3f3f, #c74958); color: white; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.2); position: fixed; top: 0; width: 100%; z-index: 1000; } .topbar a { color: white; margin-left: 16px; font-size: 0.95em; transition: opacity 0.2s; } .topbar a:hover { opacity: 0.8; } .nav-links{ margin-right: 50px; }
-    h1 {
-      font-size: 2em;
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #fa676b, #fa676b);
+      font-family: 'Noto Sans JP', 'Roboto', sans-serif;
+      color: #333;
       text-align: center;
-      font-size: 3em;
-      margin: 20px;
-      color: #af3f3f;
     }
-    
-    .content {
-      margin-top: 60px;
-      padding: 20px;
+
+    a {
+      text-decoration: none;
+      color: inherit;
     }
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
+
+    /* ロゴ部分 */
+    .RubyTech {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.6em;
+      display: flex;
+      align-items: center;
     }
-    .video-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      overflow: hidden;
-      padding: 10px;
+
+    .R {
+      width: 40px;
+      height: 40px;
+      margin-left: 8px;
     }
-    .video-card video {
+
+    /* ナビバー */
+    .topbar {
+      background: linear-gradient(90deg, #470d1c, #40121e);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      position: fixed;
+      top: 0;
       width: 100%;
-      height: auto;
-      border-radius: 8px;
+      z-index: 1000;
     }
-    .video-info {
-      padding: 8px;
+
+    .topbar a {
+      color: white;
+      margin-left: 16px;
+      font-size: 0.95em;
+      transition: opacity 0.2s;
     }
-    .video-info h3 {
-      margin: 6px 0;
+
+    .topbar a:hover {
+      opacity: 0.8;
     }
+
+    .nav-links {
+      margin-right: 50px;
+    }
+
+    /* タイトル */
+    h1 {
+      font-size: 2.8em;
+      text-align: center;
+      color: #470d1c; /* 深紅 */
+      margin: 100px auto 60px;
+      display: inline-block;
+      background: #fff; /* 白背景 */
+      padding: 20px 60px;
+      border: 3px solid #470d1c;
+      border-radius: 16px; /* 角を少し丸く */
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* 軽い立体感 */
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      display: inline-block;
+      margin: 100px auto 50px;
+    }
+
+    /* 動画一覧（縦並び） */
+    .videos {
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+      max-width: 800px;
+      margin: 0 auto 150px;
+      padding: 0 20px;
+      text-align: left;
+    }
+
+    .video-box {
+      background: #fff;
+      border: 2px solid #e1e1e1;
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .video-box:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      transform: translateY(-4px);
+      border-color: #af3f3f;
+    }
+
+    .video-title {
+      font-weight: 700;
+      color: #470d1c;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+
+    .video-box:hover .video-desc {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 10px;
+    }
+
   </style>
 </head>
 <body>
 
-  <nav class="topbar"> <a href="index.html"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a> <div class="nav-links"> <a href="howto.html"> 学び方</a> <a href="level.html"> レベル一覧</a> <a href="videos.html"> 動画</a> </div> </nav>
-  <div class="content">
-    <h1>動画一覧</h1>
-    <div class="video-grid">
+  <nav class="topbar">
+    <a href="index.html"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a>
+    <div class="nav-links">
+      <a href="howto.html"> 学び方</a>
+      <a href="level.html"> レベル一覧</a>
+      <a href="videos.html"> 動画</a>
+    </div>
+  </nav>
 
-      <!-- 動画1 -->
-      <div class="video-card">
-        <video controls>
-          <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level1.mp4
-" type="video/mp4">
-        </video>
-        <div class="video-info">
-          <h3>Level 1 (Rubyとは)</h3>
-        </div>
-      </div>
+  <h1>動画一覧</h1>
 
-      <!-- 動画2 -->
-      <div class="video-card">
-        <video controls>
-          <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level2.mp4
-" type="video/mp4">
-        </video>
-        <div class="video-info">
-          <h3>Level 2 (puts・数字)</h3>
-        </div>
-      </div>
+  <div class="videos">
+    <div class="video-box">
+      <div class="video-title">Level 1（Rubyとは）</div>
+      <video controls>
+        <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level1.mp4" type="video/mp4">
+      </video>
+    </div>
 
-      <div class="video-card">
-        <video controls>
-          <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level3.mp4
-" type="video/mp4">
-        </video>
-        <div class="video-info">
-          <h3>Level 3 (puts・文字列)</h3>
-        </div>
-      </div>
+    <div class="video-box">
+      <div class="video-title">Level 2（puts・数字）</div>
+      <video controls>
+        <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level2.mp4" type="video/mp4">
+      </video>
+    </div>
 
-      <div class="video-card">
-        <video controls>
-          <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level4.mp4
-" type="video/mp4">
-        </video>
-        <div class="video-info">
-          <h3>Level 4(puts・四則演算)</h3>
-        </div>
-      </div>
+    <div class="video-box">
+      <div class="video-title">Level 3（puts・文字列）</div>
+      <video controls>
+        <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level3.mp4" type="video/mp4">
+      </video>
+    </div>
 
-      <div class="video-card">
-        <video controls>
-          <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level5.mp4
-" type="video/mp4">
-        </video>
-        <div class="video-info">
-          <h3>Level 5(自由にコーディング)</h3>
-        </div>
-      </div>
+    <div class="video-box">
+      <div class="video-title">Level 4（puts・四則演算）</div>
+      <video controls>
+        <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level4.mp4" type="video/mp4">
+      </video>
+    </div>
 
+    <div class="video-box">
+      <div class="video-title">Level 5（自由にコーディング）</div>
+      <video controls>
+        <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level5.mp4" type="video/mp4">
+      </video>
     </div>
   </div>
+
 </body>
 </html>
