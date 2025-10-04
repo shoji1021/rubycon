@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" href="/R.png" />
+  <link rel="icon" href="/pager.png" />
   <title>RubyTech</title>
   <link rel="stylesheet" href="https://unpkg.com/blockly/media/blockly.min.css">
   <script src="https://cdn.jsdelivr.net/gh/anaesthetist/blockly-ruby@master/blockly_ruby.js"></script>
@@ -25,15 +25,15 @@
     /* ロゴ部分 */
     .RubyTech{
       font-family: 'Nunito', sans-serif;
-      font-weight: 800;
       font-size: 1.6em;
       display: flex;
       align-items: center;
     }
     .R {
-      width: 40px;
+      width: auto;
       height: 40px;
-      margin-left: 8px;
+      padding-left: 0;
+      margin-left: 0;
     }
 
     /* ナビバー */
@@ -118,7 +118,7 @@
     }
 
     button {
-      background-color: #d4b567;
+      background-color: #ba254d;
       color: white;
       border: none;
       border-radius: 16px;
@@ -298,11 +298,13 @@
 <body>
   <!-- ✅ 最初の全画面オーバーレイ動画 -->
 <div id="videoOverlay">
-  <video id="introVideo" autoplay muted playsinline controls>
-    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level3.mp4
-" type="video/mp4">
+  <video id="introVideo" playsinline controls style="display:none;">
+    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level3.mp4" type="video/mp4">
     お使いのブラウザは動画をサポートしていません
   </video>
+
+  <!-- ✅ 再生ボタン -->
+  <div id="playButton" class="play-btn">▶ 動画を再生</div>
 </div>
 
   <div class="overlay" id="overlay">
@@ -319,7 +321,7 @@
 <div class="container">
 
   <nav class="topbar">
-    <a href="index.html"><div class="RubyTech">RubyTech<img class="R" src="/R.png" alt="Logo"></div></a>
+    <a href="index.html"><div class="RubyTech"><img class="R" src="/rubytech.png" alt="Logo"></div></a>
     <div>
       <a href="howto.html"> 学び方</a>
       <a href="level.html"> レベル一覧</a>
@@ -368,21 +370,21 @@
 window.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("introVideo");
   const overlay = document.getElementById("videoOverlay");
+  const playBtn = document.getElementById("playButton");
 
-  // 自動再生 → フルスクリーン試行
-  video.play().then(() => {
-    if (video.requestFullscreen) {
-      video.requestFullscreen();
-    } else if (video.webkitRequestFullscreen) { // Safari対応
-      video.webkitRequestFullscreen();
-    }
-  }).catch(err => {
-    console.warn("自動再生に失敗:", err);
+  // ✅ クリックしたら動画再生
+  playBtn.addEventListener("click", () => {
+    playBtn.style.display = "none";      // ボタンを隠す
+    video.style.display = "block";       // 動画を表示
+    video.play().catch(err => {
+      console.warn("再生エラー:", err);
+      playBtn.style.display = "block";   // 失敗したらボタン戻す
+    });
   });
 
-  // ✅ 動画終了時にオーバーレイを非表示
+  // ✅ 動画終了時
   video.addEventListener("ended", () => {
-    overlay.style.display = "none";
+    overlay.style.display = "none"; // オーバーレイ消去
   });
 });
 
