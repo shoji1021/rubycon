@@ -147,7 +147,7 @@ Blockly.Blocks["texts"] = {
   init: function () {
     this.setColour(180);
     this.appendDummyInput()
-      .appendField(new Blockly.FieldTextInput('" "'), "TEXT"); // Directly editable
+      .appendField(new Blockly.FieldTextInput('""'), "TEXT"); // Directly editable
     this.setOutput(true, "String");
     this.setTooltip("文字列を入力");
   }
