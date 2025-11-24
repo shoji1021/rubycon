@@ -310,7 +310,7 @@
 }
   </style>
 </head>
-<body>
+<body data-level-id="level5">
   <!-- ✅ 最初の全画面オーバーレイ動画 -->
 <div id="videoOverlay">
   <video id="introVideo" playsinline controls style="display:none;">
@@ -373,26 +373,78 @@ Level 1〜4で学んだことを活かして、<br>
   <script type="module" src="/src/level.ts" defer></script>
 
 <script>
+  /**
+   * 進捗をローカルストレージに保存する関数
+   */
+  function updateProgress(levelId, newPercentage) {
+    if (!levelId) return; 
+
+    const storageKey = 'progress_' + levelId;
+    const currentProgress = parseInt(localStorage.getItem(storageKey) || '0');
+    
+    if (newPercentage > currentProgress) {
+      localStorage.setItem(storageKey, newPercentage.toString());
+      console.log(`Progress updated for ${levelId}: ${newPercentage}%`);
+    }
+  }
+</script>
+
+<script>
  window.addEventListener("DOMContentLoaded", () => {
-  const video = document.getElementById("introVideo");
-  const overlay = document.getElementById("videoOverlay");
-  const playBtn = document.getElementById("playButton");
+   // ★追加: levelId を body タグから取得
+   const levelId = document.body.dataset.levelId;
 
-  // ✅ クリックしたら動画再生
-  playBtn.addEventListener("click", () => {
-    playBtn.style.display = "none";      // ボタンを隠す
-    video.style.display = "block";       // 動画を表示
-    video.play().catch(err => {
-      console.warn("再生エラー:", err);
-      playBtn.style.display = "block";   // 失敗したらボタン戻す
-    });
-  });
+   const video = document.getElementById("introVideo");
+   const overlay = document.getElementById("videoOverlay");
+   const playBtn = document.getElementById("playButton");
 
-  // ✅ 動画終了時
-  video.addEventListener("ended", () => {
-    overlay.style.display = "none"; // オーバーレイ消去
+   playBtn.addEventListener("click", () => {
+     playBtn.style.display = "none";
+     video.style.display = "block";
+     video.play().catch(err => {
+       console.warn("再生エラー:", err);
+       playBtn.style.display = "block";
+     });
+   });
+
+   video.addEventListener("ended", () => {
+     overlay.style.display = "none";
+     
+     // ★追加: 20% 進捗を保存
+     updateProgress(levelId, 20);
+   });
+ });
+</script>
+
+<script>
+  // (DOMContentLoaded の外に書く)
+
+  // 必要な要素を取得
+  const runButton = document.getElementById("button");
+  const levelId = document.body.dataset.levelId;
+
+  let clickCount = 0; // クリック回数カウント
+
+  runButton.addEventListener("click", () => {
+    clickCount++;
+
+    if (clickCount === 1) {
+      // ✅ 1回目 (実行)
+      
+      // ★★★ Level 5 の特別ルール ★★★
+      // 実行した瞬間に 100% として保存
+      updateProgress(levelId, 100);
+      
+      // 2回目のクリック（判定）を待つ
+      return;
+    }
+
+    // ✅ 2回目 (判定)
+    // Level 5 には判定がないので、カウントをリセットするだけ
+    clickCount = 0;
+
+    // (正解・不正解のロジックはここには不要)
   });
-});
 </script>
 </body>
 </html>

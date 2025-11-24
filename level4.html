@@ -311,7 +311,7 @@
 }
   </style>
 </head>
-<body>
+<body data-level-id="level4">
   <!-- ✅ 最初の全画面オーバーレイ動画 -->
 <div id="videoOverlay">
   <video id="introVideo" playsinline controls style="display:none;">
@@ -383,6 +383,28 @@
 </div>
 
   <script type="module" src="/src/level.ts" defer></script>
+
+<script>
+  /**
+   * 進捗をローカルストレージに保存する関数
+   * @param {string} levelId - "level1", "level2" など
+   * @param {number} newPercentage - 20, 40, 60, 80, 100
+   */
+  function updateProgress(levelId, newPercentage) {
+    if (!levelId) return; // levelId が不明な場合は何もしない
+
+    const storageKey = 'progress_' + levelId;
+    
+    // 現在保存されている進捗を取得 (なければ 0)
+    const currentProgress = parseInt(localStorage.getItem(storageKey) || '0');
+    
+    // 新しい進捗の方が大きい場合のみ、値を上書き保存
+    if (newPercentage > currentProgress) {
+      localStorage.setItem(storageKey, newPercentage.toString());
+      console.log(`Progress updated for ${levelId}: ${newPercentage}%`); // (確認用ログ)
+    }
+  }
+</script>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {

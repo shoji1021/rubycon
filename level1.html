@@ -310,7 +310,7 @@
 
   </style>
 </head>
-<body>
+<body data-level-id="level1">
 <!-- ✅ 最初の全画面オーバーレイ動画 -->
 <div id="videoOverlay">
   <video id="introVideo" playsinline controls style="display:none;">
@@ -383,7 +383,31 @@
 <script type="module" src="/src/level.ts"></script>
 
 <script>
+  /**
+   * 進捗をローカルストレージに保存する関数
+   * @param {string} levelId - "level1", "level2" など
+   * @param {number} newPercentage - 20, 40, 60, 80, 100
+   */
+  function updateProgress(levelId, newPercentage) {
+    if (!levelId) return; // levelId が不明な場合は何もしない
+
+    const storageKey = 'progress_' + levelId;
+    
+    // 現在保存されている進捗を取得 (なければ 0)
+    const currentProgress = parseInt(localStorage.getItem(storageKey) || '0');
+    
+    // 新しい進捗の方が大きい場合のみ、値を上書き保存
+    if (newPercentage > currentProgress) {
+      localStorage.setItem(storageKey, newPercentage.toString());
+      console.log(`Progress updated for ${levelId}: ${newPercentage}%`); // (確認用ログ)
+    }
+  }
+</script>
+
+<script>
 window.addEventListener("DOMContentLoaded", () => {
+  const levelId = document.body.dataset.levelId;
+
   const video = document.getElementById("introVideo");
   const overlay = document.getElementById("videoOverlay");
   const playBtn = document.getElementById("playButton");
@@ -398,9 +422,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ✅ 動画終了時
+  
+
+ // ✅ 動画終了時 (20% 進捗)
   video.addEventListener("ended", () => {
     overlay.style.display = "none"; // オーバーレイ消去
+    
+    // ▼▼▼ 20% 進捗を保存 ▼▼▼
+    updateProgress(levelId, 20);
   });
 });
 
@@ -411,24 +440,42 @@ window.addEventListener("DOMContentLoaded", () => {
   const closePopup = document.getElementById("closePopup");
   const toast = document.getElementById("toast");
 
+  const levelId = document.body.dataset.levelId;
+  
   let clickCount = 0; // クリック回数カウント
 
   runButton.addEventListener("click", () => {
     clickCount++;
 
     if (clickCount === 1) {
-      // ✅ 1回目は実行だけ（ポップアップなし）
+      // ✅ 1回目は実行 (60% 進捗)
+      
+      // ▼▼▼ 60% 進捗を保存 ▼▼▼
+      updateProgress(levelId, 60);
+      
       return;
     }
 
-    // ✅ 2回目以降は判定してリセット
+    // ✅ 2回目以降は判定
     clickCount = 0;
 
     const result = outputBox.value.trim();
     if (result === "2025") {
-      overlay.style.display = "flex"; // 正解
+      // ✅ 正解 (100% 進捗)
+      
+      // ▼▼▼ 100% 進捗を保存 ▼▼▼
+      // (localStorage.setItem を updateProgress に変更)
+      updateProgress(levelId, 100);
+      
+      overlay.style.display = "flex";
+      
     } else {
-      toast.style.display = "block"; // 不正解
+      // ✅ 不正解 (80% 進捗)
+      
+      // ▼▼▼ 80% 進捗を保存 ▼▼▼
+      updateProgress(levelId, 80);
+      
+      toast.style.display = "block";
       setTimeout(() => {
         toast.style.display = "none";
       }, 2000);
@@ -439,6 +486,8 @@ window.addEventListener("DOMContentLoaded", () => {
     overlay.style.display = "none";
     window.location.href = "level.html";
   });
+
+  
 </script>
 
 

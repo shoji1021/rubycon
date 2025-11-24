@@ -115,11 +115,38 @@ Blockly.Blocks["math_arithmetic"] = {
 
   // Rubyジェネレーターがグローバルに追加されている前提
   const textbox = document.getElementById("textbox") as HTMLTextAreaElement;
-  workspace.addChangeListener(() => {
+  workspace.addChangeListener((event: any) => {
     // @ts-ignore
     const rubyCode = (window as any).Ruby.workspaceToCode(workspace);
     textbox.value = rubyCode;
   });
+
+  if (event instanceof Blockly.Events.BlockMove) {
+      
+      // 'instanceof' を通過すると 'event' は 'BlockMove' 型として扱われるため、
+      // 'isUiEvent' プロパティに安全にアクセスできます。
+      if (event.isUiEvent) {
+        try {
+          // levelX.html の body タグから levelId を取得
+          const levelId = document.body.dataset.levelId;
+          if (!levelId) return; // IDがなければ何もしない
+
+          const newPercentage = 40;
+          const storageKey = 'progress_' + levelId;
+          
+          // 現在の進捗を取得
+          const currentProgress = parseInt(localStorage.getItem(storageKey) || '0');
+          
+          // 新しい進捗の方が大きい場合のみ保存
+          if (newPercentage > currentProgress) {
+            localStorage.setItem(storageKey, newPercentage.toString());
+            console.log(`Progress updated for ${levelId}: ${newPercentage}% (Blockly move)`);
+          }
+        } catch (e) {
+          console.error('Failed to save 40% progress from Blockly', e);
+        }
+      }
+    }
 
   // --- RubyVMの初期化・実行ボタンの処理 ---
   const { consolePrinter, RubyVM } = await import("@ruby/wasm-wasi");

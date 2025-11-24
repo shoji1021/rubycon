@@ -14,6 +14,10 @@
    color: #333;
    text-align: center;
   }
+  /* bodyスクロール禁止 (モーダル表示時) */
+  body.modal-open {
+    overflow: hidden;
+  }
 
   a {
    text-decoration: none;
@@ -81,8 +85,7 @@
   text-align: center;
  }
 
- /* ▼▼▼ 修正箇所 ▼▼▼ */
- /* レベル一覧 */
+ /* レベル一覧コンテナ (Gridを維持) */
  .levels {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -94,51 +97,189 @@
   box-sizing: border-box;
   }
 
+ /* ▼▼▼ CSS修正箇所 ▼▼▼ */
+
+ /* レベルカードのベース */
  .level-box {
   background-color: white;
-  background-image: url('/pager.png');
-  background-position: right;
-  background-size: contain;
-  background-repeat: no-repeat;
   border: 2px solid #e1e1e1;
   border-radius: 14px;
   padding: 20px;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  height: 100%;
+  height: auto;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
  }
- /* ▲▲▲ 修正箇所 ▲▲▲ */
 
-
+ /* カードのHoverエフェクト (★Hover詳細は削除し、隆起エフェクトのみ残す) */
  .level-box:hover {
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
   transform: translateY(-4px);
   border-color: #af3f3f;
  }
 
+ /* Level 1, 2 などのタイトル部分 */
  .level-title {
   font-weight: 700;
   color: #470d1c;
   font-size: 1.2em;
-  margin-bottom: 6px;
+  margin-bottom: 15px;
  }
 
- .level-desc {
-  max-height: 0;
-  opacity: 0;
-  transition: all 0.4s ease;
+ /* 進捗バーとボタンのコンテナ (画像UI) */
+ .level-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 1px solid #f0f0f0;
+ }
+
+ .progress-area {
+  flex-grow: 1;
+  margin-right: 20px;
+ }
+
+ .progress-container {
+  width: 100%;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  height: 10px;
   overflow: hidden;
-  font-size: 0.95em;
-  color: #555;
  }
 
- .level-box:hover .level-desc {
-  max-height: 200px;
-  opacity: 1;
-  margin-top: 10px;
+ .progress-bar {
+  height: 100%;
+  background-color: #a04040;
+  transition: width 0.5s ease;
  }
+
+ .progress-text {
+  font-size: 0.9em;
+  color: #555;
+  display: block;
+  margin-top: 4px;
+ }
+
+ /* アクションエリア (ボタンとリンク) */
+ .action-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+ }
+
+ /* 「学習する」ボタン */
+ .btn-study {
+  background-color: #f0ad4e;
+  color: #333;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+ }
+ .btn-study:hover {
+  background-color: #ec9a29;
+ }
+
+ /* 「レッスンを見る」リンク */
+ .view-details-link {
+  font-size: 0.9em;
+  color: #777;
+  text-decoration: none;
+  margin-top: 8px;
+  cursor: pointer; /* クリック可能を示す */
+ }
+ .view-details-link:hover {
+  text-decoration: underline; /* ホバーで下線 */
+ }
+
+ /* ★修正：詳細エリアは非表示にしておく (JSで内容を取得するため) */
+ .level-details {
+  display: none;
+ }
+
+ /* モーダル背景 (オーバーレイ) */
+ .modal-overlay {
+  display: none; /* ★JSで 'flex' に変更して表示 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* 半透明の黒 */
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* ナビバーより上 */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+ }
+
+ /* モーダル本体 (コンテンツボックス) */
+ .modal-content {
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px; /* ポップアップの最大幅 */
+  text-align: left;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+ }
+
+ /* モーダル表示時のアニメーション */
+ .modal-overlay.visible {
+  opacity: 1;
+ }
+ .modal-overlay.visible .modal-content {
+  transform: scale(1);
+ }
+
+ /* モーダル内のタイトル */
+ #modal-title {
+  font-size: 1.4em;
+  font-weight: 700;
+  color: #470d1c;
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+ }
+
+ /* モーダル内の詳細本文 */
+ #modal-body {
+  font-size: 1em;
+  color: #333;
+  line-height: 1.7;
+ }
+ #modal-body strong {
+  color: #a04040;
+ }
+
+ /* 閉じるボタン */
+ .modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 2em;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  line-height: 1;
+ }
+ .modal-close:hover {
+  color: #333;
+ }
+
  </style>
 </head>
 <body>
@@ -154,22 +295,44 @@
  <h1>レベル一覧</h1>
 
  <div class="levels" id="levels">
-  <a href="level1.html">
-   <div class="level-box">
-    <div class="level-title">Level 1　（Rubyとは）</div>
-    <div class="level-desc">
+
+  <div class="level-box" data-level-id="level1">
+   <div class="level-title">Level 1　（Rubyとは）</div>
+   <div class="level-summary">
+     <div class="progress-area">
+       <div class="progress-container">
+         <div class="progress-bar" style="width: 0%;"></div>
+       </div>
+       <span class="progress-text">0% 完了</span>
+     </div>
+     <div class="action-area">
+       <a href="level1.html" class="btn btn-study">学習する</a>
+       <span class="view-details-link">レッスンを見る</span>
+     </div>
+   </div>
+   <div class="level-details">
     まずは、<strong>Rubyとは何かを学びましょう。</strong><br>
     ここでは、<strong>Rubyの基本的な文法や概念</strong>を紹介します。<br>
     さらに、今回の教材で使用するBlocklyの使い方も説明します。<br>
     さあ、プログラミングの世界へ一歩踏み出しましょう！
-    </div>
    </div>
-  </a>
+  </div>
 
- <a href="level2.html">
-  <div class="level-box">
+  <div class="level-box"data-level-id="level2">
    <div class="level-title">Level 2　（puts・数字）</div>
-   <div class="level-desc">
+   <div class="level-summary">
+     <div class="progress-area">
+       <div class="progress-container">
+         <div class="progress-bar" style="width: 20%;"></div>
+       </div>
+       <span class="progress-text">20% 完了</span>
+     </div>
+     <div class="action-area">
+       <a href="level2.html" class="btn btn-study">学習する</a>
+       <span class="view-details-link">レッスンを見る</span>
+     </div>
+   </div>
+   <div class="level-details">
     Rubyの基本的な<strong>「puts」</strong>を学びます。まずは、数字です。<br>
     画面に数字を出力することが最初の一歩です。<br>
     これは<strong>ほかの言語でも基本的に最初に行うこと</strong>です。<br>
@@ -177,12 +340,22 @@
     さあ、数字を出力してみましょう！
    </div>
   </div>
- </a>
 
- <a href="level3.html">
-  <div class="level-box">
+  <div class="level-box"data-level-id="level3">
    <div class="level-title">Level 3　（puts・文字列）</div>
-   <div class="level-desc">
+   <div class="level-summary">
+     <div class="progress-area">
+       <div class="progress-container">
+         <div class="progress-bar" style="width: 0%;"></div>
+       </div>
+       <span class="progress-text">0% 完了</span>
+     </div>
+     <div class="action-area">
+       <a href="level3.html" class="btn btn-study">学習する</a>
+       <span class="view-details-link">レッスンを見る</span>
+     </div>
+   </div>
+   <div class="level-details">
     次に文字列の出力です。<br>
     Level 2で行ったRubyの基本的な<strong>「puts」</strong>の<strong>数字出力を文字列出力に置き換え</strong>ます。<br>
     なので、基本的にはLevel 2とほとんど同じ流れになります。<br>
@@ -190,30 +363,159 @@
     さあ、文字列を出力してみましょう！
    </div>
   </div>
- </a>
 
- <a href="level4.html">
-  <div class="level-box">
+  <div class="level-box"data-level-id="level4">
    <div class="level-title">Level 4_（puts・四則演算）</div>
-   <div class="level-desc">
+   <div class="level-summary">
+     <div class="progress-area">
+       <div class="progress-container">
+         <div class="progress-bar" style="width: 60%;"></div>
+       </div>
+       <span class="progress-text">60% 完了</span>
+     </div>
+     <div class="action-area">
+       <a href="level4.html" class="btn btn-study">学習する</a>
+       <span class="view-details-link">レッスンを見る</span>
+     </div>
+   </div>
+   <div class="level-details">
     次は、数字の<strong>四則演算</strong>を学びます。<br>
     Level 2で学んだ<strong>「puts」</strong>を使って、<strong>足し算、引き算、掛け算、割り算</strong>を行います。<br>
     ここでは、<strong>Rubyでの四則演算の基本的な使い方</strong>を学びます。<br>
     さあ、四則演算を使ってみましょう！
    </div>
   </div>
- </a>
 
-  <a href="level5.html">
-   <div class="level-box">
-    <div class="level-title">Level 5　（自由にコーディング）</div>
-    <div class="level-desc">
-     自分で自由にコードを書いてみましょう！<br>
-     <strong>Level 1〜4で学んだことを活かして、</strong><br>
-     自分だけのプログラムを作成してみてください。<br>
-    </div>
+  <div class="level-box"data-level-id="level5">
+   <div class="level-title">Level 5　（自由にコーディング）</div>
+   <div class="level-summary">
+     <div class="progress-area">
+       <div class="progress-container">
+         <div class="progress-bar" style="width: 0%;"></div>
+       </div>
+       <span class="progress-text">0% 完了</span>
+     </div>
+     <div class="action-area">
+       <a href="level5.html" class="btn btn-study">学習する</a>
+       <span class="view-details-link">レッスンを見る</span>
+     </div>
    </div>
-  </a>
+   <div class="level-details">
+    自分で自由にコードを書いてみましょう！<br>
+    <strong>Level 1〜4で学んだことを活かして、</strong><br>
+    自分だけのプログラムを作成してみてください。
+   </div>
+  </div>
+
+ </div> <div id="details-modal" class="modal-overlay">
+   <div class="modal-content">
+     <span class="modal-close">&times;</span>
+     
+     <h2 id="modal-title"></h2>
+     
+     <div id="modal-body"></div>
+   </div>
  </div>
-</body>
+ <script>
+  // ページの読み込みが完了したら実行
+  document.addEventListener('DOMContentLoaded', () => {
+   
+   // ▼▼▼ ここから進捗表示処理を追加 ▼▼▼
+
+   /**
+    * すべてのレベルカードの進捗表示を更新する関数
+    */
+   function updateAllProgressDisplays() {
+     const levelBoxes = document.querySelectorAll('.level-box[data-level-id]');
+
+     levelBoxes.forEach(box => {
+       const levelId = box.dataset.levelId;
+       const storageKey = 'progress_' + levelId;
+
+       // ローカルストレージから進捗を取得
+       const progressValue = localStorage.getItem(storageKey);
+       
+       // ★★★ 修正点 ★★★
+       // '100' かどうかではなく、保存された数値(なければ 0) をそのまま使う
+       const percentage = parseInt(progressValue || '0');
+       // ★★★★★★★★★★
+
+       // --- UIに反映 ---
+       const progressBar = box.querySelector('.progress-bar');
+       if (progressBar) {
+         progressBar.style.width = percentage + '%';
+       }
+       const progressText = box.querySelector('.progress-text');
+       if (progressText) {
+         progressText.textContent = percentage + '% 完了';
+       }
+     });
+   }
+
+   // ページ読み込み時に進捗を更新
+   updateAllProgressDisplays();
+    
+    // モーダル関連の要素を取得
+    const modalOverlay = document.getElementById('details-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalCloseButton = modalOverlay.querySelector('.modal-close');
+
+    // 「レッスンを見る」リンクをすべて取得
+    const detailLinks = document.querySelectorAll('.view-details-link');
+
+    // モーダルを開く関数
+    function openModal(title, detailsHtml) {
+      modalTitle.textContent = title; // タイトルを設定
+      modalBody.innerHTML = detailsHtml; // 詳細HTMLを設定
+      
+      modalOverlay.style.display = 'flex'; // オーバーレイを表示
+      document.body.classList.add('modal-open'); // bodyのスクロールを禁止
+      
+      // 少し遅らせて 'visible' クラスを追加し、CSSアニメーションを発火
+      setTimeout(() => {
+        modalOverlay.classList.add('visible');
+      }, 10);
+    }
+
+    // モーダルを閉じる関数
+    function closeModal() {
+      modalOverlay.classList.remove('visible'); // アニメーション用クラスを削除
+      document.body.classList.remove('modal-open'); // bodyのスクロール禁止を解除
+
+      // アニメーションが終わるのを待ってから非表示にする
+      setTimeout(() => {
+        modalOverlay.style.display = 'none';
+      }, 300); // CSSの transition 時間 (0.3s) に合わせる
+    }
+
+    // すべての「レッスンを見る」リンクにクリックイベントを追加
+    detailLinks.forEach(link => {
+      link.addEventListener('click', (event) => {
+        // リンクの親要素 (level-box) を探す
+        const levelBox = event.currentTarget.closest('.level-box');
+        
+        // 親要素からタイトルと詳細を取得
+        const title = levelBox.querySelector('.level-title').textContent;
+        const detailsHtml = levelBox.querySelector('.level-details').innerHTML;
+
+        // モーダルを開く
+        openModal(title, detailsHtml);
+      });
+    });
+
+    // 閉じるボタンがクリックされたらモーダルを閉じる
+    modalCloseButton.addEventListener('click', closeModal);
+
+    // モーダルの背景（オーバーレイ）がクリックされたらモーダルを閉じる
+    modalOverlay.addEventListener('click', (event) => {
+      // クリックされたのが背景（オーバーレイ）自身か確認
+      if (event.target === modalOverlay) {
+        closeModal();
+      }
+    });
+
+  });
+ </script>
+ </body>
 </html>
