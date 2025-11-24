@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="/pager.png" />
-  <title>RubyTech - Level 5</title>
+  <title>RubyTech - Level 6</title>
   <link rel="stylesheet" href="https://unpkg.com/blockly/media/blockly.min.css">
   <script src="https://cdn.jsdelivr.net/gh/anaesthetist/blockly-ruby@master/blockly_ruby.js"></script>
   <style>
@@ -46,11 +46,11 @@
     .play-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
   </style>
 </head>
-<body data-level-id="level5">
+<body data-level-id="level6">
 <div id="videoOverlay">
   <div id="skipButton" class="skip-btn">スキップ ≫</div>
   <video id="introVideo" playsinline controls style="display:none;">
-    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level5.mp4" type="video/mp4">
+    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level6.mp4" type="video/mp4">
     お使いのブラウザは動画をサポートしていません
   </video>
   <div id="playButton" class="play-btn">▶ 動画を再生</div>
@@ -98,7 +98,7 @@
       <div class="problem-box">
         <div style="margin-bottom: 4px; color: #888;">問題</div>
         <div id="problem">
-          <p>変数ブロック (<code>set</code>) を使って、<br>変数 <code>variable</code> に <strong>100</strong> を代入してください。<br><br>その後、その <code>variable</code> を <code>puts</code> で出力してください。</p>
+          <p>変数 <code>variable</code> に <strong>80</strong> を代入してください。<br><br>もし (<code>if</code>) <code>variable</code> が 60 より大きい (<code>></code>) なら、<br><strong>"pass"</strong> と出力してください。<br><br>それ以外 (<code>else</code>) なら、<strong>"fail"</strong> と出力してください。</p>
         </div>
       </div>
     </div>
@@ -172,7 +172,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const result = outputBox.value.trim();
     
     // ★ 修正: 正解条件の変更
-    if (result === "100") {
+    if (result === "pass") {
       updateProgress(levelId, 100);
       overlay.style.display = "flex";
     } else {

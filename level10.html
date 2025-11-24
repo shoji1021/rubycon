@@ -311,7 +311,6 @@
   background: rgba(255, 255, 255, 0.4);
 }
 
-
 .play-btn {
   font-size: 2em;
   color: white;
@@ -329,30 +328,19 @@
 }
   </style>
 </head>
-<body data-level-id="level4">
+<body data-level-id="level10">
   <!-- ✅ 最初の全画面オーバーレイ動画 -->
 <div id="videoOverlay">
 
   <div id="skipButton" class="skip-btn">スキップ ≫</div>
   <video id="introVideo" playsinline controls style="display:none;">
-    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level4.mp4" type="video/mp4">
+    <source src="https://github.com/shoji1021/rubycon/releases/download/v1.0/level5.mp4" type="video/mp4">
     お使いのブラウザは動画をサポートしていません
   </video>
 
   <!-- ✅ 再生ボタン -->
   <div id="playButton" class="play-btn">▶ 動画を再生</div>
 </div>
-
-  <div class="overlay" id="overlay">
-    <div class="popup">
-      <h2>正解！</h2>
-      <p>レベルクリアしました！</p>
-      <button id="closePopup">レベル一覧へ戻る</button>
-    </div>
-  </div>
-
-  <!-- ✅ 不正解通知 -->
-  <div class="toast" id="toast">不正解。もう一度挑戦！</div>
 
 <div class="container">
 
@@ -392,9 +380,9 @@
       <div class="problem-box">
         <div style="margin-bottom: 4px; color: #888;">問題</div>
         <div id="problem">
-          <p>計算です。<br>いまから四則演算を学習します。<br>Level 2で学習した「puts」を使い表示させます。<br>
-            足し算、引き算、掛け算、割り算すべてを使って、<br>「2 + 3 - 1 * 4 / 2」を計算して出力してください。
-          </p>
+          <p>自分で自由にコードを書いてみましょう！
+Level 1〜4で学んだことを活かして、<br>
+自分だけのプログラムを作成してみてください。</p>
         </div>
       </div>
     </div>
@@ -407,122 +395,97 @@
 <script>
   /**
    * 進捗をローカルストレージに保存する関数
-   * @param {string} levelId - "level1", "level2" など
-   * @param {number} newPercentage - 20, 40, 60, 80, 100
    */
   function updateProgress(levelId, newPercentage) {
-    if (!levelId) return; // levelId が不明な場合は何もしない
+    if (!levelId) return; 
 
     const storageKey = 'progress_' + levelId;
-    
-    // 現在保存されている進捗を取得 (なければ 0)
     const currentProgress = parseInt(localStorage.getItem(storageKey) || '0');
     
-    // 新しい進捗の方が大きい場合のみ、値を上書き保存
     if (newPercentage > currentProgress) {
       localStorage.setItem(storageKey, newPercentage.toString());
-      console.log(`Progress updated for ${levelId}: ${newPercentage}%`); // (確認用ログ)
+      console.log(`Progress updated for ${levelId}: ${newPercentage}%`);
     }
   }
 </script>
 
 <script>
-window.addEventListener("DOMContentLoaded", () => {
-  const levelId = document.body.dataset.levelId;
+ window.addEventListener("DOMContentLoaded", () => {
+   // levelId と各種要素を取得
+   const levelId = document.body.dataset.levelId;
+   const video = document.getElementById("introVideo");
+   const overlay = document.getElementById("videoOverlay");
+   const playBtn = document.getElementById("playButton");
+   
+   // ★1. スキップボタンを取得
+   const skipBtn = document.getElementById("skipButton");
 
-  const video = document.getElementById("introVideo");
-  const overlay = document.getElementById("videoOverlay");
-  const playBtn = document.getElementById("playButton");
-
-  const skipBtn = document.getElementById("skipButton");
-
-function closeVideoOverlay() {
+   // ★2. スキップ（または終了）時の共通アクションを関数化
+   function closeVideoOverlay() {
      video.pause(); // 動画を停止
      overlay.style.display = "none"; // オーバーレイを消去
      
      // 20% 進捗を保存 (level5 以外でも共通)
      updateProgress(levelId, 20);
    }
-  
-  // ✅ クリックしたら動画再生
-  playBtn.addEventListener("click", () => {
-    playBtn.style.display = "none";      // ボタンを隠す
-    video.style.display = "block";       // 動画を表示
-    video.play().catch(err => {
-      console.warn("再生エラー:", err);
-      playBtn.style.display = "block";   // 失敗したらボタン戻す
-      skipBtn.style.display = "none";
-    });
-  });
 
-  
+   // ✅ クリックしたら動画再生
+   playBtn.addEventListener("click", () => {
+     playBtn.style.display = "none";      // 再生ボタンを隠す
+     video.style.display = "block";       // 動画を表示
+     
+     // ★3. スキップボタンを表示
+     skipBtn.style.display = "block";
 
- // ✅ 動画終了時 (20% 進捗)
-  video.addEventListener("ended", () => {
-    closeVideoOverlay()
-  });
-  // ✅ スキップボタン表示
-  skipBtn.addEventListener("click", () => {
+     video.play().catch(err => {
+       console.warn("再生エラー:", err);
+       playBtn.style.display = "block"; // 失敗したら再生ボタン戻す
+       skipBtn.style.display = "none";  // スキップボタンも隠す
+     });
+   });
+
+   // ✅ 動画終了時
+   video.addEventListener("ended", () => {
+     // ★4. 共通関数を呼び出し
      closeVideoOverlay();
    });
-});
 
+   // ★5. スキップボタンのクリックイベントを追加
+   skipBtn.addEventListener("click", () => {
+     closeVideoOverlay();
+   });
+ });
+</script>
 
+<script>
+  // (DOMContentLoaded の外に書く)
 
+  // 必要な要素を取得
   const runButton = document.getElementById("button");
-  const outputBox = document.getElementById("output");
-  const overlay = document.getElementById("overlay");
-  const closePopup = document.getElementById("closePopup");
-  const toast = document.getElementById("toast");
-
   const levelId = document.body.dataset.levelId;
-  
+
   let clickCount = 0; // クリック回数カウント
 
   runButton.addEventListener("click", () => {
     clickCount++;
 
     if (clickCount === 1) {
-      // ✅ 1回目は実行 (60% 進捗)
+      // ✅ 1回目 (実行)
       
-      // ▼▼▼ 60% 進捗を保存 ▼▼▼
-      updateProgress(levelId, 60);
+      // ★★★ Level 5 の特別ルール ★★★
+      // 実行した瞬間に 100% として保存
+      updateProgress(levelId, 100);
       
+      // 2回目のクリック（判定）を待つ
       return;
     }
 
-    // ✅ 2回目以降は判定
+    // ✅ 2回目 (判定)
+    // Level 5 には判定がないので、カウントをリセットするだけ
     clickCount = 0;
 
-    const result = outputBox.value.trim();
-    if (result === "2025") {
-      // ✅ 正解 (100% 進捗)
-      
-      // ▼▼▼ 100% 進捗を保存 ▼▼▼
-      // (localStorage.setItem を updateProgress に変更)
-      updateProgress(levelId, 100);
-      
-      overlay.style.display = "flex";
-      
-    } else {
-      // ✅ 不正解 (80% 進捗)
-      
-      // ▼▼▼ 80% 進捗を保存 ▼▼▼
-      updateProgress(levelId, 80);
-      
-      toast.style.display = "block";
-      setTimeout(() => {
-        toast.style.display = "none";
-      }, 2000);
-    }
+    // (正解・不正解のロジックはここには不要)
   });
-
-  closePopup.addEventListener("click", () => {
-    overlay.style.display = "none";
-    window.location.href = "level.html";
-  });
-
-  
 </script>
 </body>
 </html>
