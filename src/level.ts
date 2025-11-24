@@ -20,14 +20,24 @@ window.addEventListener("DOMContentLoaded", async () => {
         { "kind": "block", "type": "controls_if" },
         { "kind": "block", "type": "logic_boolean" },
         { "kind": "block", "type": "logic_compare" },
+        { "kind": "block", "type": "variables_set_local" },
+        { "kind": "block", "type": "controls_each" },
+        { "kind": "block", "type": "lists_create_with" },
         { "kind": "block", "type": "math_number" },
         { "kind": "block", "type": "math_arithmetic" },
         { "kind": "block", "type": "text" },
-        { "kind": "block", "type": "text_print" },
+        { "kind": "block", "type": "texts" },
+        { "kind": "block", "type": "text_print" }
+        // ★ 1. 新しいブロックをツールボックスに追加
       ]
     }
   });
 
+  // ★ 2. ジェネレーターを初期化 (必須)
+  (window as any).Ruby.init(workspace);
+
+
+  // --- (ここからは既存のブロックの「見た目」の上書き) ---
 
   Blockly.Blocks["text_print"] = {
   init: function () {
@@ -52,6 +62,12 @@ Blockly.Blocks["math_number"].init = function () {
 // --- テキストリテラル ---
 Blockly.Blocks["text"].init = function () {
   this.setColour(160);
+  this.appendDummyInput().appendField(new Blockly.FieldTextInput(""), "TEXT");
+  this.setOutput(true, "String");
+};
+
+Blockly.Blocks["texts"].init = function () {
+  this.setColour(180);
   this.appendDummyInput().appendField(new Blockly.FieldTextInput(""), "TEXT");
   this.setOutput(true, "String");
 };
@@ -113,31 +129,35 @@ Blockly.Blocks["math_arithmetic"] = {
 
 
 
+
+
+  // ★ 3. (ここに新しいブロックの「定義」を追加しても良いですが、
+  //      ruby_generator.ts にまとめるのが一般的です)
+
+
   // Rubyジェネレーターがグローバルに追加されている前提
   const textbox = document.getElementById("textbox") as HTMLTextAreaElement;
-  workspace.addChangeListener((event: any) => {
+
+  // ★ 4. 構文エラーを修正
+  //    (進捗保存ロジックをリスナーの *中* に移動)
+  workspace.addChangeListener((event) => {
+    
+    // 処理1: コード生成
     // @ts-ignore
     const rubyCode = (window as any).Ruby.workspaceToCode(workspace);
     textbox.value = rubyCode;
-  });
 
-  if (event instanceof Blockly.Events.BlockMove) {
-      
-      // 'instanceof' を通過すると 'event' は 'BlockMove' 型として扱われるため、
-      // 'isUiEvent' プロパティに安全にアクセスできます。
+    // 処理2: 進捗保存 (40%)
+    if (event instanceof Blockly.Events.BlockMove) {
       if (event.isUiEvent) {
         try {
-          // levelX.html の body タグから levelId を取得
           const levelId = document.body.dataset.levelId;
-          if (!levelId) return; // IDがなければ何もしない
+          if (!levelId) return; 
 
           const newPercentage = 40;
           const storageKey = 'progress_' + levelId;
-          
-          // 現在の進捗を取得
           const currentProgress = parseInt(localStorage.getItem(storageKey) || '0');
           
-          // 新しい進捗の方が大きい場合のみ保存
           if (newPercentage > currentProgress) {
             localStorage.setItem(storageKey, newPercentage.toString());
             console.log(`Progress updated for ${levelId}: ${newPercentage}% (Blockly move)`);
@@ -147,6 +167,9 @@ Blockly.Blocks["math_arithmetic"] = {
         }
       }
     }
+  });
+
+  
 
   // --- RubyVMの初期化・実行ボタンの処理 ---
   const { consolePrinter, RubyVM } = await import("@ruby/wasm-wasi");
