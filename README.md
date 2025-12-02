@@ -7,6 +7,6 @@
 
    ```bash
    git clone https://github.com/shoji1021/RubyTech.git
-   cd rubycon
+   cd RubyTech
    npm install
    npm run dev
