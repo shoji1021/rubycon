@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="/pager.png" />
   <title>RubyTech</title>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.basic.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/blockly/media/blockly.min.css">
   <style>
     body {
@@ -130,6 +131,50 @@
 
   </style>
 </head>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. 動画カード要素をすべて取得し、検索データを作成
+    const videoBoxes = Array.from(document.querySelectorAll('.video-box'));
+    const searchData = videoBoxes.map(box => {
+      return {
+        element: box,
+        title: box.querySelector('.video-title').textContent
+      };
+    });
+
+    // 2. Fuse.js の設定
+    const fuse = new Fuse(searchData, {
+      keys: ["title"],
+      threshold: 0.4, // 少し曖昧な入力も許容
+    });
+
+    // 3. 検索窓の入力イベント
+    const searchInput = document.getElementById('videoSearchInput');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim();
+
+      if (query === "") {
+        // 入力が空ならすべて表示
+        videoBoxes.forEach(box => box.style.display = 'block');
+        return;
+      }
+
+      // 検索実行
+      const results = fuse.search(query);
+      const matchedElements = results.map(result => result.item.element);
+
+      // 表示・非表示の切り替え
+      videoBoxes.forEach(box => {
+        if (matchedElements.includes(box)) {
+          box.style.display = 'block';
+        } else {
+          box.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
 <body>
 
   <nav class="topbar">
@@ -142,6 +187,11 @@
   </nav>
 
   <h1>動画一覧</h1>
+
+  <div style="margin-bottom: 40px;">
+  <input type="text" id="videoSearchInput" placeholder="動画タイトルで検索..." 
+         style="padding: 12px 20px; width: 80%; max-width: 500px; border-radius: 25px; border: 2px solid #470d1c; outline: none; font-size: 1em;">
+</div>
 
   <div class="videos">
     <div class="video-box">

@@ -5,6 +5,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link rel="icon" href="/pager.png" />
  <title>RubyTech</title>
+ <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.basic.min.js"></script>
  <link rel="stylesheet" href="https://unpkg.com/blockly/media/blockly.min.css">
  <style>
   body {
@@ -293,6 +294,11 @@
  </nav>
 
  <h1>レベル一覧</h1>
+
+ <div style="margin-bottom: 30px;">
+  <input type="text" id="searchInput" placeholder="レベル名や内容で検索..." 
+         style="padding: 12px 20px; width: 80%; max-width: 500px; border-radius: 25px; border: 2px solid #470d1c; outline: none; font-size: 1em;">
+</div>
 
  <div class="levels" id="levels">
 
@@ -610,6 +616,50 @@
       }
     });
 
+    // --- Fuse.jsによる検索機能 ---
+
+// 1. 全カード要素を取得し、検索用データを作成
+const levelBoxes = Array.from(document.querySelectorAll('.level-box'));
+const searchData = levelBoxes.map(box => {
+  return {
+    element: box,
+    // タイトルと、隠れている詳細テキストの両方を検索対象にする
+    title: box.querySelector('.level-title').textContent,
+    details: box.querySelector('.level-details').textContent
+  };
+});
+
+// 2. Fuse.js の初期化
+const fuse = new Fuse(searchData, {
+  keys: ["title", "details"], // 検索対象のキー
+  threshold: 0.3,             // 0に近いほど厳密、1に近いほど曖昧
+});
+
+// 3. 入力時の処理
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.trim();
+
+  if (query === "") {
+    // 検索窓が空ならすべて表示
+    levelBoxes.forEach(box => box.style.display = 'flex');
+    return;
+  }
+
+  // 検索実行
+  const results = fuse.search(query);
+  const matchedElements = results.map(result => result.item.element);
+
+  // 一致するものだけ表示
+  levelBoxes.forEach(box => {
+    if (matchedElements.includes(box)) {
+      box.style.display = 'flex'; // 元がflexなのでblockではなくflexを指定
+    } else {
+      box.style.display = 'none';
+    }
+  });
+});
   });
  </script>
  </body>
